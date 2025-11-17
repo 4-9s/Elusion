@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Elusion — Website Under Maintenance</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+
+    /* Why are you looking here? Discord Username 8_cw | Made by the one and only AFOUND */
+    :root {
+      --green: #96cb9d;
+      --green-soft: #c6e6cc;
+      --bg-dark: #020617;
+      --text-muted: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Poppins", sans-serif;
+      color: #f9fafb;
+      background:
+        radial-gradient(circle at top left, rgba(150, 203, 157, 0.16), transparent 55%),
+        radial-gradient(circle at bottom right, #020617 0, #000 60%);
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .page-shell {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+      animation: fadeDown 0.7s ease-out forwards;
+      opacity: 0;
+    }
+
+    .logo-img {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      border-radius: 999px;
+      box-shadow: 0 0 0 2px rgba(150, 203, 157, 0.4);
+      animation: float 3.2s ease-in-out infinite alternate;
+    }
+
+    .brand-text {
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      color: var(--green-soft);
+    }
+
+
+
+    .main-row {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+
+    .copy-block {
+      max-width: 520px;
+      animation: fadeUp 0.8s ease-out forwards;
+      opacity: 0;
+    }
+
+    .kicker {
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(198, 246, 213, 0.9);
+      margin-bottom: 0.7rem;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 3.3vw, 2.6rem);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight {
+      background: linear-gradient(120deg, #96cb9d, #ffffff);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      margin-top: 0.4rem;
+      margin-bottom: 1.2rem;
+      color: var(--text-muted);
+      font-size: 0.98rem;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .pill {
+      padding: 0.28rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(150, 203, 157, 0.6);
+      font-size: 0.8rem;
+      color: var(--green-soft);
+      background: rgba(3, 10, 17, 0.9);
+      backdrop-filter: blur(12px);
+    }
+
+    .primary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #02140c;
+      background: linear-gradient(135deg, #96cb9d, #6cb678);
+      box-shadow: 0 18px 45px rgba(150, 203, 157, 0.6);
+      text-decoration: none;
+      margin-top: 0.4rem;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+      box-shadow: 0 22px 60px rgba(150, 203, 157, 0.75);
+    }
+
+
+
+    .hero-side {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeUp 0.9s ease-out forwards;
+      opacity: 0;
+    }
+
+    .hero-shell {
+      position: relative;
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .hero-glow {
+      position: absolute;
+      inset: 12% 10% 10%;
+      background: radial-gradient(circle at center, rgba(150, 203, 157, 0.25), transparent 70%);
+      filter: blur(4px);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+
+    .hero-frame {
+      position: relative;
+      border-radius: 26px;
+      overflow: hidden;
+      padding: 0.4rem;
+
+      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.85);
+      transform: translateY(8px);
+      animation: floatSlow 4.5s ease-in-out infinite alternate;
+    }
+
+    .hero-inner {
+      border-radius: 22px;
+      overflow: hidden;
+    }
+
+    .hero-inner img {
+      width: 100%;
+      display: block;
+      transform: scale(1.02);
+      transition: transform 0.5s ease;
+    }
+
+    .hero-frame:hover img {
+      transform: scale(1.05);
+    }
+
+
+
+    .footer {
+      margin-top: 1.8rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding-bottom: 0.2rem;
+      animation: fadeUp 1s ease-out forwards;
+      opacity: 0;
+    }
+
+
+    @keyframes float {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-4px); }
+    }
+
+    @keyframes floatSlow {
+      from { transform: translateY(8px); }
+      to   { transform: translateY(2px); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+
+    @media (max-width: 900px) {
+      .page-shell {
+        padding-inline: 1.3rem;
+      }
+
+      .main-row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2rem;
+      }
+
+      .hero-side {
+        order: -1;
+      }
+
+      .hero-shell {
+        max-width: 360px;
+        margin: 0 auto;
+      }
+
+      .footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page-shell {
+        padding-top: 1.2rem;
+      }
+
+      h1 {
+        font-size: 1.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page-shell">
+
+  <div class="top-bar">
+    <img src="assets/elusion-logo.gif" alt="Elusion logo" class="logo-img">
+    <span class="brand-text">ELUSION</span>
+  </div>
+  <div class="main-row">
+
+    <div class="copy-block">
+      <div class="kicker">Temporary maintenance</div>
+      <h1>
+        Website currently
+        <span class="highlight">under maintenance.</span>
+      </h1>
+      <p class="lead">
+        We’re upgrading Elusion to serve you better. Some pages may be offline
+        while we deploy new features and polish the experience.
+      </p>
+
+      <div class="pill-row">
+        <span class="pill">🎮 GTAV graphics & FiveM scripts</span>
+        <span class="pill">🖥 PC optimization & support</span>
+        <span class="pill">💬 Discord services & bots</span>
+      </div>
+      <a href="https://elusion.site" class="primary-btn">
+        elusion.site
+      </a>
+    </div>
+    <div class="hero-side">
+      <div class="hero-shell">
+        <div class="hero-glow"></div>
+        <div class="hero-frame">
+          <div class="hero-inner">
+            <img src="assets/hero-main.png" alt="Elusion hero">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>© <span id="year"></span> Elusion. All rights reserved.</span>
+    <span>We’ll be back online shortly — thank you for your patience.</span>
+  </div>
+</div>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
