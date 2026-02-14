@@ -2,280 +2,349 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <!-- ✅ iPhone-friendly viewport + safe areas -->
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Valentine 💘</title>
+  <title>Valentine Mode 💘</title>
+
   <style>
     :root{
-      --bg1:#fff0f6;
-      --bg2:#ffe3ee;
-      --ink:#2b1b2a;
-      --pink:#ff4d8d;
+      --bgA:#fff0f6;
+      --bgB:#ffe3ee;
+      --ink:#241623;
       --hot:#ff2e7a;
       --rose:#ff7aa8;
-      --card: rgba(255,255,255,.80);
-      --shadow: 0 20px 60px rgba(0,0,0,.12);
+      --card: rgba(255,255,255,.86);
+      --glass: rgba(255,255,255,.72);
+      --stroke: rgba(40,20,35,.12);
+      --shadow: 0 18px 55px rgba(0,0,0,.14);
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
 
-    /* ✅ iPhone fix: allow scrolling, no "stuck half screen" */
+    /* ✅ FIX: allow scrolling + stable on iPhone Safari */
     body{
       margin:0;
       font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color:var(--ink);
       background:
-        radial-gradient(1200px 700px at 20% 10%, #fff 0%, transparent 60%),
-        radial-gradient(900px 600px at 90% 20%, #fff 0%, transparent 55%),
-        linear-gradient(135deg, var(--bg1), var(--bg2));
+        radial-gradient(1100px 700px at 20% 10%, rgba(255,255,255,.9) 0%, transparent 60%),
+        radial-gradient(900px 600px at 90% 20%, rgba(255,255,255,.8) 0%, transparent 55%),
+        linear-gradient(135deg, var(--bgA), var(--bgB));
       overflow-x:hidden;
-      overflow-y:auto;
+      -webkit-text-size-adjust: 100%;
       -webkit-overflow-scrolling: touch;
     }
 
-    /* Floating hearts background */
+    /* Floating hearts layer */
     .hearts{
       position:fixed; inset:0;
       pointer-events:none;
       overflow:hidden;
       z-index:0;
-      filter: drop-shadow(0 8px 10px rgba(0,0,0,.08));
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.10));
     }
     .heart{
       position:absolute;
       width:18px; height:18px;
       transform: rotate(45deg);
       background: linear-gradient(135deg, #ff6aa2, #ff2e7a);
-      border-radius: 4px;
-      opacity:.55;
+      border-radius:4px;
+      opacity:.58;
       animation: floatUp linear infinite;
+      will-change: transform, opacity;
     }
     .heart:before,.heart:after{
       content:"";
       position:absolute;
       width:18px;height:18px;
-      background: inherit;
+      background:inherit;
       border-radius:50%;
     }
     .heart:before{left:-9px; top:0}
     .heart:after{top:-9px; left:0}
     @keyframes floatUp{
-      from{ transform: translateY(110vh) rotate(45deg) scale(var(--s,1)); opacity:0 }
-      10%{opacity:.55}
-      to{ transform: translateY(-20vh) rotate(45deg) scale(var(--s,1)); opacity:0 }
+      0%   {transform: translateY(110vh) rotate(45deg) scale(var(--s,1)); opacity:0}
+      12%  {opacity:.58}
+      100% {transform: translateY(-18vh) rotate(45deg) scale(var(--s,1)); opacity:0}
     }
 
-    /* Framework */
+    /* App wrapper */
     .app{
       position:relative;
       z-index:1;
 
-      /* ✅ iPhone viewport fixes */
-      min-height: 100vh;
+      /* ✅ iPhone safe-area padding */
+      padding:
+        max(18px, env(safe-area-inset-top))
+        max(18px, env(safe-area-inset-right))
+        max(18px, env(safe-area-inset-bottom))
+        max(18px, env(safe-area-inset-left));
+
+      /* ✅ stable height units */
       min-height: 100svh;
       min-height: 100dvh;
 
-      display:grid;
-      place-items:center;
-      padding:24px;
-      padding-left: max(24px, env(safe-area-inset-left));
-      padding-right:max(24px, env(safe-area-inset-right));
-      padding-top: max(24px, env(safe-area-inset-top));
-      padding-bottom:max(24px, env(safe-area-inset-bottom));
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
-    .page{
-      width:min(920px, 94vw);
+    /* One "screen" at a time (no nested scroll) */
+    .screen{
+      width: min(920px, 94vw);
+      margin: 0 auto;
+      display:none;
+    }
+    .screen.active{display:block;}
+
+    /* Card */
+    .card{
       background: var(--card);
-      border: 1px solid rgba(255,255,255,.7);
+      border: 1px solid rgba(255,255,255,.75);
       border-radius: 28px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      padding: 26px;
-      display:none;
-      position:relative;
       overflow:hidden;
+      position:relative;
     }
-    .page.active{display:block}
-
-    /* ✅ allow the card to scroll if needed on small screens */
-    .page{
-      max-height: calc(100dvh - 48px);
-      overflow:auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .page::before{
+    .card::before{
       content:"";
       position:absolute; inset:-2px;
       background:
-        radial-gradient(200px 200px at 15% 15%, rgba(255,77,141,.25), transparent 60%),
-        radial-gradient(240px 240px at 85% 25%, rgba(255,46,122,.22), transparent 65%),
-        radial-gradient(280px 280px at 55% 110%, rgba(255,122,168,.20), transparent 55%);
+        radial-gradient(260px 240px at 18% 18%, rgba(255,46,122,.22), transparent 62%),
+        radial-gradient(280px 260px at 84% 28%, rgba(255,122,168,.18), transparent 66%),
+        radial-gradient(360px 280px at 55% 120%, rgba(255,46,122,.14), transparent 62%);
       pointer-events:none;
-      z-index:0;
     }
-    .content{position:relative; z-index:1}
 
-    header{
-      display:flex; gap:18px; align-items:center; justify-content:space-between;
-      flex-wrap:wrap;
-      margin-bottom:16px;
+    .inner{
+      position:relative;
+      padding: 22px;
     }
-    .brand{display:flex; align-items:center; gap:12px;}
+
+    /* Header */
+    .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 220px;
+    }
     .badge{
-      width:44px; height:44px;
-      border-radius:14px;
-      background: linear-gradient(135deg, var(--hot), var(--rose));
-      display:grid; place-items:center;
+      width:44px;height:44px;
+      border-radius: 14px;
+      display:grid;
+      place-items:center;
       color:white;
-      box-shadow: 0 12px 24px rgba(255,46,122,.28);
+      background: linear-gradient(135deg, var(--hot), var(--rose));
+      box-shadow: 0 14px 28px rgba(255,46,122,.25);
       position:relative;
       overflow:hidden;
+      flex:0 0 auto;
     }
     .badge::after{
       content:"";
       position:absolute; inset:-40%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
       transform: rotate(25deg);
-      animation: sheen 2.7s infinite;
+      animation: sheen 2.8s infinite;
     }
     @keyframes sheen{
-      0%{transform:translateX(-60%) rotate(25deg)}
-      60%{transform:translateX(80%) rotate(25deg)}
-      100%{transform:translateX(80%) rotate(25deg)}
+      0%{transform:translateX(-70%) rotate(25deg)}
+      55%{transform:translateX(85%) rotate(25deg)}
+      100%{transform:translateX(85%) rotate(25deg)}
     }
-
     h1{
       margin:0;
-      font-size: clamp(26px, 4vw, 40px);
+      font-size: clamp(24px, 4.8vw, 40px);
       line-height:1.05;
       letter-spacing:-0.02em;
     }
-    .subtitle{
+    .sub{
       margin:6px 0 0;
       opacity:.82;
       font-size: 14.5px;
       line-height:1.45;
     }
-
-    .pill{
-      padding:10px 14px;
+    .chip{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:10px 12px;
       border-radius:999px;
-      background: rgba(255,255,255,.72);
-      border:1px solid rgba(255,255,255,.85);
+      background: rgba(255,255,255,.76);
+      border:1px solid rgba(255,255,255,.84);
       font-size:13px;
-      display:flex; gap:8px; align-items:center;
       max-width: 100%;
     }
 
+    /* Layout */
     .grid{
       display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap:18px;
-      margin-top:14px;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+      align-items:stretch;
     }
-    @media (max-width:860px){
+    @media (max-width: 880px){
       .grid{grid-template-columns:1fr}
     }
 
-    .card{
-      background: rgba(255,255,255,.70);
-      border:1px solid rgba(255,255,255,.80);
-      border-radius:22px;
-      padding:18px;
+    .panel{
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,.82);
+      border-radius: 22px;
+      padding: 16px;
     }
 
-    .inputRow{
+    /* Inputs / Buttons */
+    .row{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      margin-top:12px;
       align-items:stretch;
+      margin-top: 12px;
     }
     input{
-      flex:1 1 220px;
-      padding:14px 14px;
-      border-radius:14px;
-      border:1px solid rgba(43,27,42,.15);
-      background: rgba(255,255,255,.85);
-      outline:none;
-      font-size:16px; /* prevent iOS zoom-on-focus */
+      flex: 1 1 220px;
       min-height: 48px;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.88);
+      outline:none;
+      font-size: 16px; /* ✅ prevents iOS zoom */
     }
     input:focus{
-      border-color: rgba(255,46,122,.5);
+      border-color: rgba(255,46,122,.55);
       box-shadow: 0 0 0 4px rgba(255,46,122,.12);
     }
 
     button{
+      min-height: 48px;
+      padding: 14px 16px;
+      border-radius: 14px;
       border:0;
       cursor:pointer;
-      border-radius:14px;
-      padding:14px 16px;
-      font-weight:800;
-      font-size:15.5px;
+      font-weight: 900;
+      font-size: 15.5px;
       letter-spacing:.01em;
-      transition: transform .08s ease, filter .2s ease;
       user-select:none;
-      min-height:48px;
       touch-action: manipulation;
       -webkit-tap-highlight-color: transparent;
+      transition: transform .08s ease, filter .2s ease;
+      white-space: nowrap;
     }
     button:active{transform: translateY(1px) scale(.99)}
-    .btnPrimary{
+    .primary{
+      color:white;
       background: linear-gradient(135deg, var(--hot), var(--rose));
-      color:white;
-      box-shadow: 0 14px 30px rgba(255,46,122,.26);
+      box-shadow: 0 14px 30px rgba(255,46,122,.25);
     }
-    .btnGhost{
-      background: rgba(255,255,255,.80);
-      border: 1px solid rgba(43,27,42,.12);
+    .ghost{
       color: var(--ink);
+      background: rgba(255,255,255,.80);
+      border: 1px solid var(--stroke);
     }
-    .btnDanger{
-      background: linear-gradient(135deg, #7c3aed, #ff2e7a);
+    .danger{
       color:white;
+      background: linear-gradient(135deg, #7c3aed, var(--hot));
       box-shadow: 0 14px 30px rgba(124,58,237,.18);
     }
 
-    .msg{ margin-top:10px; font-size:14px; min-height:20px; }
-    .msg.good{color:#0a7a4b}
-    .msg.bad{color:#b42318}
+    .msg{
+      margin-top: 10px;
+      min-height: 20px;
+      font-size: 14px;
+    }
+    .ok{color:#0a7a4b}
+    .bad{color:#b42318}
 
-    /* Cute illustration */
-    .cuteWrap{display:grid; place-items:center; padding:8px 0;}
-    .cute{width:min(320px, 72vw); aspect-ratio: 1.2/1; position:relative;}
+    .footer{
+      margin-top: 12px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      opacity:.75;
+      font-size: 12.5px;
+      line-height:1.35;
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      padding: 2px 6px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.78);
+      border:1px solid var(--stroke);
+    }
+
+    /* Cute bear */
+    .cuteWrap{
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding: 10px 8px;
+    }
+    .cute{
+      width: min(320px, 72vw);
+      aspect-ratio: 1.2/1;
+      position:relative;
+      margin: 2px auto 10px;
+    }
     .blob{
       position:absolute; inset:0;
       border-radius: 35% 65% 55% 45% / 45% 45% 55% 55%;
-      background: radial-gradient(circle at 30% 20%, #fff, transparent 45%),
-                  linear-gradient(135deg, rgba(255,46,122,.35), rgba(255,122,168,.35));
+      background:
+        radial-gradient(circle at 30% 20%, #fff, transparent 45%),
+        linear-gradient(135deg, rgba(255,46,122,.35), rgba(255,122,168,.33));
       animation: wobble 6s ease-in-out infinite;
     }
     @keyframes wobble{
       0%,100%{transform: rotate(-2deg) scale(1)}
       50%{transform: rotate(2deg) scale(1.02)}
     }
+    .miniHeart{
+      position:absolute;
+      width:18px;height:18px;
+      left:78%; top:14%;
+      transform: rotate(45deg);
+      background: linear-gradient(135deg, #ff6aa2, #ff2e7a);
+      border-radius:4px;
+      animation: pop 1.8s ease-in-out infinite;
+    }
+    .miniHeart:before,.miniHeart:after{
+      content:"";
+      position:absolute;
+      width:18px;height:18px;
+      background:inherit;
+      border-radius:50%;
+    }
+    .miniHeart:before{left:-9px;top:0}
+    .miniHeart:after{top:-9px;left:0}
+    @keyframes pop{
+      0%,100%{transform: translateY(0) rotate(45deg) scale(1)}
+      50%{transform: translateY(-10px) rotate(45deg) scale(1.08)}
+    }
+
     .bear{
       position:absolute;
       left:50%; top:52%;
       transform: translate(-50%,-50%);
-      width:62%;
-      height:62%;
-    }
-    .head{
-      position:absolute; inset: 14% 12% 16% 12%;
-      background: rgba(255,255,255,.88);
-      border: 1px solid rgba(43,27,42,.10);
-      border-radius: 38% 38% 42% 42% / 44% 44% 56% 56%;
-      box-shadow: 0 16px 40px rgba(0,0,0,.08);
+      width:62%; height:62%;
     }
     .ear{
       position:absolute; top:8%;
       width:22%; height:22%;
-      background: rgba(255,255,255,.88);
-      border: 1px solid rgba(43,27,42,.10);
+      background: rgba(255,255,255,.90);
+      border: 1px solid rgba(40,20,35,.10);
       border-radius: 50%;
     }
     .ear.left{left:10%}
@@ -285,6 +354,13 @@
       position:absolute; inset:28%;
       border-radius:50%;
       background: rgba(255,46,122,.12);
+    }
+    .head{
+      position:absolute; inset: 14% 12% 16% 12%;
+      background: rgba(255,255,255,.90);
+      border: 1px solid rgba(40,20,35,.10);
+      border-radius: 38% 38% 42% 42% / 44% 44% 56% 56%;
+      box-shadow: 0 16px 40px rgba(0,0,0,.08);
     }
     .face{position:absolute; inset: 34% 18% 20% 18%;}
     .eye{
@@ -314,114 +390,85 @@
       position:absolute; left:50%; top:48%;
       transform: translateX(-50%);
       width:16%; height:12%;
-      background: rgba(43,27,42,.85);
+      background: rgba(36,22,35,.85);
       border-radius: 0 0 14px 14px / 0 0 18px 18px;
     }
     .smile{
       position:absolute; left:50%; top:58%;
       transform: translateX(-50%);
       width:28%; height:20%;
-      border-bottom: 3px solid rgba(43,27,42,.75);
+      border-bottom: 3px solid rgba(36,22,35,.75);
       border-radius: 0 0 70px 70px;
       opacity:.9;
     }
-    .floatingMiniHeart{
-      position:absolute;
-      width:18px; height:18px;
-      left:78%; top:14%;
-      transform: rotate(45deg);
-      background: linear-gradient(135deg, #ff6aa2, #ff2e7a);
-      border-radius: 4px;
-      animation: pop 1.8s ease-in-out infinite;
-    }
-    .floatingMiniHeart:before,.floatingMiniHeart:after{
-      content:"";
-      position:absolute;
-      width:18px;height:18px;
-      background:inherit;
-      border-radius:50%;
-    }
-    .floatingMiniHeart:before{left:-9px; top:0}
-    .floatingMiniHeart:after{top:-9px; left:0}
-    @keyframes pop{
-      0%,100%{transform: translateY(0) rotate(45deg) scale(1)}
-      50%{transform: translateY(-10px) rotate(45deg) scale(1.08)}
-    }
 
-    /* Question page */
+    /* Question */
     .bigQ{
-      font-size: clamp(28px, 4.5vw, 52px);
+      font-size: clamp(28px, 5.6vw, 54px);
       line-height: 1.02;
       margin: 8px 0 10px;
       letter-spacing: -0.03em;
+      text-align:left;
     }
-    .nameTag{
-      display:inline-flex; gap:8px; align-items:center;
+    .who{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
       padding:10px 12px;
       border-radius:999px;
-      background: rgba(255,255,255,.75);
-      border:1px solid rgba(43,27,42,.12);
-      font-weight:900;
+      background: rgba(255,255,255,.78);
+      border:1px solid var(--stroke);
+      font-weight: 900;
       max-width: 100%;
       overflow:hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .btnRow{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-top:14px;
-      align-items:center;
-    }
-    .tinyNote{
-      opacity:.78;
-      font-size:13px;
-      margin-top:10px;
-      line-height:1.45;
+      text-overflow:ellipsis;
+      white-space:nowrap;
     }
 
-    /* YES page */
-    .fireworksWrap{
+    /* YES fireworks area */
+    .fwWrap{
       position:relative;
-      height: min(70svh, 520px);
+      height: min(62svh, 520px);
       border-radius: 22px;
       overflow:hidden;
-      background: radial-gradient(900px 420px at 50% 30%, rgba(255,255,255,.18), transparent 60%),
-                  linear-gradient(180deg, #14021b, #250028, #38001f);
+      background:
+        radial-gradient(900px 420px at 50% 30%, rgba(255,255,255,.18), transparent 60%),
+        linear-gradient(180deg, #14021b, #250028, #38001f);
       border: 1px solid rgba(255,255,255,.12);
     }
     canvas{display:block; width:100%; height:100%}
-    .overlayLove{
+
+    .overlay{
       position:absolute; inset:0;
-      display:grid; place-items:center;
-      pointer-events:none;
+      display:grid;
+      place-items:center;
       text-align:center;
-      padding:18px;
+      padding: 16px;
+      pointer-events:none;
     }
     .loveTitle{
-      font-size: clamp(30px, 5vw, 60px);
       margin:0;
-      color: rgba(255,255,255,.96);
-      text-shadow: 0 10px 40px rgba(0,0,0,.35);
+      font-size: clamp(30px, 6vw, 60px);
+      color: rgba(255,255,255,.97);
+      text-shadow: 0 12px 40px rgba(0,0,0,.35);
       letter-spacing:-0.03em;
     }
     .loveSub{
-      margin:10px 0 0;
-      color: rgba(255,255,255,.88);
+      margin: 10px 0 0;
       font-size: 15px;
-      opacity:.95;
       line-height:1.45;
+      color: rgba(255,255,255,.9);
     }
 
     /* NO page */
     .sadStage{
       position:relative;
-      height: min(64svh, 460px);
+      height: min(58svh, 460px);
       border-radius: 22px;
       overflow:hidden;
-      background: radial-gradient(900px 500px at 40% 30%, rgba(255,255,255,.22), transparent 62%),
-                  linear-gradient(180deg, #0b1020, #0a1a1a);
+      background:
+        radial-gradient(900px 520px at 40% 30%, rgba(255,255,255,.22), transparent 62%),
+        linear-gradient(180deg, #0b1020, #081c1b);
       border: 1px solid rgba(255,255,255,.12);
     }
     .rain{
@@ -433,7 +480,7 @@
           rgba(173,216,230,.14) 12px,
           rgba(173,216,230,.14) 13px);
       animation: rainMove 0.9s linear infinite;
-      opacity:.9;
+      opacity:.95;
       mix-blend-mode: screen;
     }
     @keyframes rainMove{
@@ -442,300 +489,273 @@
     }
     .noCenter{
       position:absolute; inset:0;
-      display:grid; place-items:center;
+      display:grid;
+      place-items:center;
       text-align:center;
-      padding:18px;
-      color:rgba(255,255,255,.92);
+      padding: 16px;
+      color: rgba(255,255,255,.92);
     }
     .noTitle{
       margin:0;
-      font-size: clamp(26px, 4.2vw, 52px);
+      font-size: clamp(26px, 5vw, 52px);
       letter-spacing:-0.03em;
-      text-shadow: 0 10px 40px rgba(0,0,0,.35);
+      text-shadow: 0 12px 40px rgba(0,0,0,.35);
     }
     .noText{
-      margin:10px auto 0;
-      max-width: 56ch;
-      color: rgba(255,255,255,.84);
+      margin: 10px auto 0;
+      max-width: 58ch;
       font-size: 15px;
       line-height:1.5;
-    }
-    .tinyBtnRow{
-      display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
-      margin-top:16px;
-      pointer-events:auto;
+      color: rgba(255,255,255,.85);
     }
 
-    /* Footer */
-    .footer{
-      margin-top: 14px;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      opacity:.75;
-      font-size:12.5px;
-      line-height:1.35;
-    }
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      padding: 2px 6px;
-      border-radius: 8px;
-      background: rgba(255,255,255,.72);
-      border:1px solid rgba(43,27,42,.12);
-    }
-
-    /* Reduced motion friendly */
+    /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
-      .heart, .badge::after, .blob, .floatingMiniHeart, .rain{animation:none !important}
+      .heart, .badge::after, .blob, .miniHeart, .rain{animation:none !important}
     }
   </style>
 </head>
+
 <body>
   <div class="hearts" id="hearts"></div>
 
   <div class="app">
-    <!-- PAGE 1: Name gate -->
-    <section class="page active" id="page-name">
-      <div class="content">
-        <header>
-          <div class="brand">
-            <div class="badge" aria-hidden="true">❤</div>
-            <div>
-              <h1>Valentine Access Portal</h1>
-              <p class="subtitle">Enter the secret name to unlock the cute stuff ✨ (the bear is a strict bouncer)</p>
+    <!-- SCREEN 1 -->
+    <div class="screen active" id="s-name">
+      <div class="card">
+        <div class="inner">
+          <div class="top">
+            <div class="brand">
+              <div class="badge" aria-hidden="true">❤</div>
+              <div>
+                <h1>Valentine Security Checkpoint</h1>
+                <div class="sub">Enter the secret name. The bear is the bouncer. He takes his job personally.</div>
+              </div>
             </div>
-          </div>
-          <div class="pill" title="Hint">
-            <span aria-hidden="true">🔒</span>
-            <span>Tip: set the correct name in the code</span>
-          </div>
-        </header>
-
-        <div class="grid">
-          <div class="card">
-            <div style="font-weight:900; font-size:18px;">What’s your name?</div>
-            <div class="subtitle">Wrong answers will be judged by a committee of hearts.</div>
-
-            <div class="inputRow">
-              <input id="nameInput" placeholder="Type the name here…" autocomplete="off" />
-              <button class="btnPrimary" id="unlockBtn">Unlock 💘</button>
-              <button class="btnGhost" id="randomBtn" title="Just for fun">Heart Confetti</button>
-            </div>
-
-            <div class="msg" id="nameMsg"></div>
-
-            <div class="footer">
-              <div>Press <span class="kbd">Enter</span> to submit</div>
-              <div id="statusLine">System status: romantically operational ✅</div>
-            </div>
+            <div class="chip"><span aria-hidden="true">🔒</span><span>Tip: set the correct name in the code</span></div>
           </div>
 
-          <div class="card cuteWrap">
-            <div class="cute" aria-hidden="true">
-              <div class="blob"></div>
-              <div class="floatingMiniHeart"></div>
-              <div class="bear">
-                <div class="ear left"></div>
-                <div class="ear right"></div>
-                <div class="head">
-                  <div class="face">
-                    <div class="eye left"><div class="sparkle"></div></div>
-                    <div class="eye right"><div class="sparkle"></div></div>
-                    <div class="cheek left"></div>
-                    <div class="cheek right"></div>
-                    <div class="nose"></div>
-                    <div class="smile"></div>
+          <div class="grid">
+            <div class="panel">
+              <div style="font-weight:950; font-size:18px;">Your name, please:</div>
+              <div class="sub">Wrong answers will be processed by our “Romantic Auditing Department™”.</div>
+
+              <div class="row">
+                <input id="nameInput" placeholder="Type the name here…" autocomplete="off" />
+                <button class="primary" id="unlockBtn">Unlock 💘</button>
+                <button class="ghost" id="confettiBtn">Heart Confetti</button>
+              </div>
+
+              <div class="msg" id="nameMsg"></div>
+
+              <div class="footer">
+                <div>Press <span class="kbd">Enter</span> to submit</div>
+                <div id="statusLine">Status: love.exe is booting…</div>
+              </div>
+            </div>
+
+            <div class="panel cuteWrap">
+              <div class="cute" aria-hidden="true">
+                <div class="blob"></div>
+                <div class="miniHeart"></div>
+                <div class="bear">
+                  <div class="ear left"></div>
+                  <div class="ear right"></div>
+                  <div class="head">
+                    <div class="face">
+                      <div class="eye left"><div class="sparkle"></div></div>
+                      <div class="eye right"><div class="sparkle"></div></div>
+                      <div class="cheek left"></div>
+                      <div class="cheek right"></div>
+                      <div class="nose"></div>
+                      <div class="smile"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style="font-weight:950;">Bear Guard 🐻</div>
+              <div class="sub">He checks names, vibes, and whether you’ve drank water today.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2 -->
+    <div class="screen" id="s-question">
+      <div class="card">
+        <div class="inner">
+          <div class="top">
+            <div class="brand">
+              <div class="badge" aria-hidden="true">💌</div>
+              <div>
+                <h1>Important Question</h1>
+                <div class="sub">Cue dramatic music. 🎻 Also cue the bear writing notes aggressively.</div>
+              </div>
+            </div>
+            <div class="who" id="whoTag">👤</div>
+          </div>
+
+          <div class="grid">
+            <div class="panel">
+              <div class="bigQ">Will you be my valentine? 💘</div>
+              <div class="sub" id="pressureLine">“Yes” includes fireworks. “No” includes… a very theatrical rain scene.</div>
+
+              <div class="row" style="margin-top:14px">
+                <button class="primary" id="yesBtn">YES!! 🎆</button>
+                <button class="ghost" id="noBtn">No 😶</button>
+                <button class="ghost" id="backBtn">Back</button>
+              </div>
+
+              <div class="sub" style="margin-top:12px;">
+                Fun fact: pressing “Yes” may cause uncontrollable smiling. Side effects include happiness.
+              </div>
+            </div>
+
+            <div class="panel">
+              <div style="font-weight:950; font-size:18px;">Poem (warning: adorable)</div>
+              <div class="sub" style="margin-top:10px; line-height:1.55">
+                Roses are red,<br/>
+                Violets are blue,<br/>
+                This page is cute,<br/>
+                But not as cute as you 💗
+              </div>
+              <div class="sub" style="margin-top:12px;">
+                Legal disclaimer: The bear denies all allegations of emotional manipulation.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3 -->
+    <div class="screen" id="s-yes">
+      <div class="card">
+        <div class="inner">
+          <div class="top">
+            <div class="brand">
+              <div class="badge" aria-hidden="true">🎇</div>
+              <div>
+                <h1>YAAAY!! 💖</h1>
+                <div class="sub">Celebration protocol engaged. Please secure all loose hearts.</div>
+              </div>
+            </div>
+            <div class="chip"><span aria-hidden="true">✨</span><span>Fireworks mode: ON</span></div>
+          </div>
+
+          <div class="fwWrap" id="fwWrap">
+            <canvas id="fw"></canvas>
+            <div class="overlay">
+              <div>
+                <h2 class="loveTitle">Happy Valentine’s! 💞</h2>
+                <div class="loveSub" id="loveSub">You just made my whole day.</div>
+
+                <!-- Cute inline “image” so it works anywhere (no external files) -->
+                <div style="margin-top:14px; display:grid; place-items:center;">
+                  <svg width="165" height="165" viewBox="0 0 200 200" aria-label="Cute heart mascot">
+                    <defs>
+                      <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#ff2e7a"/>
+                        <stop offset="1" stop-color="#ff7aa8"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M100 175s-60-35-82-72C-1 66 18 30 54 30c18 0 34 10 46 25 12-15 28-25 46-25 36 0 55 36 36 73-22 37-82 72-82 72z"
+                          fill="url(#g)" stroke="rgba(255,255,255,.55)" stroke-width="4"/>
+                    <circle cx="75" cy="90" r="8" fill="#241623"/>
+                    <circle cx="125" cy="90" r="8" fill="#241623"/>
+                    <path d="M85 112c8 10 22 10 30 0" fill="none" stroke="#241623" stroke-width="6" stroke-linecap="round"/>
+                    <circle cx="62" cy="108" r="10" fill="rgba(255,255,255,.35)"/>
+                    <circle cx="138" cy="108" r="10" fill="rgba(255,255,255,.35)"/>
+                  </svg>
+                  <div class="loveSub" style="opacity:.95; font-size:13px;">
+                    This heart is now your emotional support mascot. It has a tiny MBA in “Love”.
                   </div>
                 </div>
               </div>
             </div>
-            <div style="margin-top:10px; font-weight:900;">Cute Bear Guard</div>
-            <div class="subtitle" style="text-align:center">
-              He checks names, vibes, and whether you’ve hydrated today 🐻💗
-            </div>
+          </div>
+
+          <div class="row" style="margin-top:14px">
+            <button class="primary" id="replayBtn">Replay Fireworks 🎆</button>
+            <button class="ghost" id="yesBackBtn">Back</button>
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- PAGE 2: Question -->
-    <section class="page" id="page-question">
-      <div class="content">
-        <header>
-          <div class="brand">
-            <div class="badge" aria-hidden="true">💌</div>
-            <div>
-              <h1>One Important Question…</h1>
-              <p class="subtitle">This is the part where the music swells dramatically 🎻</p>
+    <!-- SCREEN 4 -->
+    <div class="screen" id="s-no">
+      <div class="card">
+        <div class="inner">
+          <div class="top">
+            <div class="brand">
+              <div class="badge" aria-hidden="true">🫠</div>
+              <div>
+                <h1>Oh. Okay. 😭</h1>
+                <div class="sub">I will now stare dramatically into the distance like a movie character.</div>
+              </div>
             </div>
-          </div>
-          <div class="nameTag" id="whoTag">👤</div>
-        </header>
-
-        <div class="grid">
-          <div class="card">
-            <div class="bigQ">Will you be my valentine? 💘</div>
-            <div class="subtitle">Choose wisely. The bear is taking notes on a clipboard.</div>
-
-            <div class="btnRow">
-              <button class="btnPrimary" id="yesBtn">YES!! 🎆</button>
-              <button class="btnGhost" id="noBtn">No 😶</button>
-              <button class="btnGhost" id="backBtn">Back</button>
-            </div>
-
-            <div class="tinyNote" id="pressureLine">
-              “Yes” includes fireworks. “No” includes… creative consequences (still cute, I promise).
-            </div>
+            <div class="chip"><span aria-hidden="true">🌧️</span><span>Drama weather enabled</span></div>
           </div>
 
-          <div class="card">
-            <div style="font-weight:900; font-size:18px;">A tiny poem (certified cringe)</div>
-            <div class="subtitle" style="margin-top:10px; line-height:1.55">
-              Roses are red,<br/>
-              Violets are blue,<br/>
-              This little webpage<br/>
-              Was made just for you 💗
-            </div>
-            <div style="margin-top:14px; opacity:.85; font-size:13px; line-height:1.45">
-              Legal disclaimer: The author may blush if you press “Yes”.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PAGE 3: YES -->
-    <section class="page" id="page-yes">
-      <div class="content">
-        <header>
-          <div class="brand">
-            <div class="badge" aria-hidden="true">🎇</div>
-            <div>
-              <h1>YAAAY!! 💖</h1>
-              <p class="subtitle">Deploying celebration protocols… please keep arms and hearts inside the ride.</p>
-            </div>
-          </div>
-          <div class="pill"><span aria-hidden="true">✨</span><span>Fireworks mode: ON</span></div>
-        </header>
-
-        <div class="fireworksWrap" id="fwWrap">
-          <canvas id="fw"></canvas>
-          <div class="overlayLove">
-            <div>
-              <h2 class="loveTitle">Happy Valentine’s! 💞</h2>
-              <p class="loveSub" id="loveSub">You just made my whole day.</p>
-
-              <!-- Cute image (no external files needed) -->
-              <div style="margin-top:14px; display:grid; place-items:center;">
-                <svg width="160" height="160" viewBox="0 0 200 200" aria-label="Cute heart character">
-                  <defs>
-                    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0" stop-color="#ff2e7a"/>
-                      <stop offset="1" stop-color="#ff7aa8"/>
-                    </linearGradient>
-                  </defs>
-                  <path d="M100 175s-60-35-82-72C-1 66 18 30 54 30c18 0 34 10 46 25 12-15 28-25 46-25 36 0 55 36 36 73-22 37-82 72-82 72z"
-                        fill="url(#g)" stroke="rgba(255,255,255,.55)" stroke-width="4"/>
-                  <circle cx="75" cy="90" r="8" fill="#2b1b2a"/>
-                  <circle cx="125" cy="90" r="8" fill="#2b1b2a"/>
-                  <path d="M85 112c8 10 22 10 30 0" fill="none" stroke="#2b1b2a" stroke-width="6" stroke-linecap="round"/>
-                  <circle cx="62" cy="108" r="10" fill="rgba(255,255,255,.35)"/>
-                  <circle cx="138" cy="108" r="10" fill="rgba(255,255,255,.35)"/>
-                </svg>
-                <div style="color:rgba(255,255,255,.9); font-size:13px; opacity:.95;">
-                  This heart is now your emotional support mascot.
+          <div class="sadStage">
+            <div class="rain"></div>
+            <div class="noCenter">
+              <div>
+                <h2 class="noTitle" id="noTitle">My heart just did a lil’ backflip.</h2>
+                <div class="noText" id="noText">
+                  Honesty is valid. I’m just going to be… *artistically sad* for a second.
+                  Press “Redeem” to unlock a totally unnecessary upgrade: the “NO” button runs away next time. 😈
                 </div>
+                <div class="row" style="justify-content:center; margin-top:16px">
+                  <button class="danger" id="redeemBtn">Redeem 😈</button>
+                  <button class="ghost" id="tryAgainBtn">Try Again 💘</button>
+                  <button class="ghost" id="noBackBtn">Back</button>
+                </div>
+                <div class="sub" id="redeemNote" style="margin-top:12px; color:rgba(255,255,255,.86)"></div>
               </div>
-
             </div>
           </div>
-        </div>
 
-        <div class="btnRow" style="margin-top:14px">
-          <button class="btnPrimary" id="replayBtn">Replay Fireworks 🎆</button>
-          <button class="btnGhost" id="yesBackBtn">Back</button>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- PAGE 4: NO -->
-    <section class="page" id="page-no">
-      <div class="content">
-        <header>
-          <div class="brand">
-            <div class="badge" aria-hidden="true">🫠</div>
-            <div>
-              <h1>Oh. Okay. 😭</h1>
-              <p class="subtitle">I will simply go sit in the corner and dramatically stare out a window.</p>
-            </div>
-          </div>
-          <div class="pill"><span aria-hidden="true">🌧️</span><span>Drama weather enabled</span></div>
-        </header>
-
-        <div class="sadStage">
-          <div class="rain"></div>
-          <div class="noCenter">
-            <div>
-              <h2 class="noTitle" id="noTitle">My heart just did a lil’ backflip.</h2>
-              <p class="noText" id="noText">
-                But hey—your honesty is valid. To cope, I hired a cloud to cry on my behalf.
-                Press “Redeem” to unlock a totally unnecessary upgrade: the “NO” button will run away next time. 😈
-              </p>
-              <div class="tinyBtnRow">
-                <button class="btnDanger" id="redeemBtn">Redeem 😈</button>
-                <button class="btnGhost" id="tryAgainBtn">Try Again 💘</button>
-                <button class="btnGhost" id="noBackBtn">Back</button>
-              </div>
-              <div class="tinyNote" id="redeemNote" style="color:rgba(255,255,255,.84)"></div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-  </div>
+  </div><!-- /app -->
 
   <script>
     /***********************
-     * CONFIG YOU SHOULD EDIT
+     * EDIT THIS:
      ***********************/
-    // Set this to the EXACT name you want to accept:
-    const CORRECT_NAME = "YourNameHere"; // e.g. "Aisha"
+    const CORRECT_NAME = "Reem";
 
     /***********************
-     * Router
+     * Screen router (no nested scroll, iPhone-friendly)
      ***********************/
-    const pages = {
-      name: document.getElementById("page-name"),
-      question: document.getElementById("page-question"),
-      yes: document.getElementById("page-yes"),
-      no: document.getElementById("page-no"),
+    const screens = {
+      name: document.getElementById("s-name"),
+      q:    document.getElementById("s-question"),
+      yes:  document.getElementById("s-yes"),
+      no:   document.getElementById("s-no"),
     };
-
-    function showPage(key){
-      Object.values(pages).forEach(p => p.classList.remove("active"));
-      pages[key].classList.add("active");
-
-      // fireworks lifecycle
-      if(key === "yes") startFireworks();
-      else stopFireworks();
-
-      // scroll card to top when switching (nice on iPhone)
-      pages[key].scrollTop = 0;
-      window.scrollTo({top:0, behavior:"smooth"});
+    function go(key){
+      Object.values(screens).forEach(s => s.classList.remove("active"));
+      screens[key].classList.add("active");
+      window.scrollTo({top:0, left:0, behavior:"instant" in window ? "instant" : "auto"});
+      if(key === "yes") startFireworks(); else stopFireworks();
     }
 
     /***********************
-     * Hearts background
+     * Hearts background (perf-friendly on iPhone)
      ***********************/
     const hearts = document.getElementById("hearts");
     function spawnHeart(){
       const h = document.createElement("div");
       h.className = "heart";
       const left = Math.random()*100;
-      const dur = 7 + Math.random()*7;
-      const size = 0.7 + Math.random()*1.9;
+      const dur  = 7 + Math.random()*7;
+      const size = 0.7 + Math.random()*1.7;
       h.style.left = left + "vw";
       h.style.animationDuration = dur + "s";
       h.style.setProperty("--s", size);
@@ -743,68 +763,81 @@
       hearts.appendChild(h);
       setTimeout(()=>h.remove(), dur*1000);
     }
-
-    // iPhone perf: fewer hearts on small screens
-    const isSmall = Math.min(window.innerWidth, window.innerHeight) < 420;
-    const heartRate = isSmall ? 340 : 260;
-    let heartInterval = setInterval(spawnHeart, heartRate);
-    for(let i=0;i<(isSmall?14:22);i++) setTimeout(spawnHeart, i*60);
+    const small = Math.min(innerWidth, innerHeight) < 420;
+    const heartRate = small ? 360 : 260;
+    setInterval(spawnHeart, heartRate);
+    for(let i=0;i<(small?12:20);i++) setTimeout(spawnHeart, i*60);
 
     /***********************
      * Name gate
      ***********************/
     const nameInput = document.getElementById("nameInput");
     const unlockBtn = document.getElementById("unlockBtn");
-    const randomBtn = document.getElementById("randomBtn");
+    const confettiBtn = document.getElementById("confettiBtn");
     const nameMsg = document.getElementById("nameMsg");
     const whoTag = document.getElementById("whoTag");
     const statusLine = document.getElementById("statusLine");
+    const pressureLine = document.getElementById("pressureLine");
 
     let acceptedName = "";
 
-    function normalize(s){ return (s || "").trim().toLowerCase(); }
+    const statuses = [
+      "Status: love.exe is booting…",
+      "Status: bear is on duty 🐻📝",
+      "Status: romance firewall: ACTIVE 🔥",
+      "Status: rizz sensors calibrated ✅",
+      "Status: heart engines warmed up 💗",
+    ];
+    setInterval(()=>{
+      if(screens.name.classList.contains("active")){
+        statusLine.textContent = statuses[Math.floor(Math.random()*statuses.length)];
+      }
+    }, 3800);
 
     const wrongLines = [
-      "Hmm… that name feels suspiciously incorrect 👀",
-      "The bear says: nope 🐻",
-      "Not the secret name! The hearts demand accuracy 💗",
-      "Nice try, hacker. Valentine security is top-tier 😤",
       "Denied. Please present your correct-name license.",
+      "The bear looked at me and shook his head. That’s a no. 🐻",
+      "Incorrect. The hearts are disappointed but still cute about it.",
+      "Nice try, hacker. Valentine security is top-tier 😤",
       "Access rejected by the Department of Romance™",
+      "Wrong name. The bear is writing this down. In PEN.",
     ];
 
-    function tryUnlock(){
+    function norm(s){ return (s||"").trim().toLowerCase(); }
+
+    function unlock(){
       const typed = nameInput.value.trim();
       if(!typed){
-        nameMsg.textContent = "Psst… type a name first 💗";
+        nameMsg.textContent = "Type a name first bestie 💗";
         nameMsg.className = "msg bad";
         return;
       }
-      if(normalize(typed) === normalize(CORRECT_NAME)){
+      if(norm(typed) === norm(CORRECT_NAME)){
         acceptedName = typed;
         whoTag.textContent = "👤 " + acceptedName;
-        nameMsg.textContent = "Correct! Proceeding to the question… 💘";
-        nameMsg.className = "msg good";
-        statusLine.textContent = "System status: authorized rizz detected ✅";
-        setTimeout(()=>showPage("question"), 650);
+        nameMsg.textContent = "✅ Correct. Welcome, VIP of my heart. Proceeding…";
+        nameMsg.className = "msg ok";
+        statusLine.textContent = "Status: authorized cutie detected ✅";
+        setTimeout(()=>go("q"), 550);
       } else {
         nameMsg.textContent = wrongLines[Math.floor(Math.random()*wrongLines.length)];
         nameMsg.className = "msg bad";
-        statusLine.textContent = "System status: suspicious vibes detected ⚠️";
-        pages.name.animate(
-          [{transform:"translateX(0)"},{transform:"translateX(-6px)"},{transform:"translateX(6px)"},{transform:"translateX(0)"}],
-          {duration:220, iterations:1}
+        statusLine.textContent = "Status: suspicious vibes detected ⚠️";
+        // tiny shake
+        screens.name.animate(
+          [{transform:"translateX(0)"},{transform:"translateX(-7px)"},{transform:"translateX(7px)"},{transform:"translateX(0)"}],
+          {duration:220}
         );
       }
     }
 
-    unlockBtn.addEventListener("click", tryUnlock);
-    nameInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") tryUnlock(); });
+    unlockBtn.addEventListener("click", unlock);
+    nameInput.addEventListener("keydown", e => { if(e.key === "Enter") unlock(); });
 
-    randomBtn.addEventListener("click", ()=>{
+    confettiBtn.addEventListener("click", ()=>{
       for(let i=0;i<18;i++) setTimeout(spawnHeart, i*40);
-      nameMsg.textContent = "Heart confetti deployed ✅";
-      nameMsg.className = "msg good";
+      nameMsg.textContent = "Heart confetti deployed. Please do not inhale hearts.";
+      nameMsg.className = "msg ok";
     });
 
     /***********************
@@ -813,17 +846,15 @@
     const yesBtn = document.getElementById("yesBtn");
     const noBtn  = document.getElementById("noBtn");
     const backBtn= document.getElementById("backBtn");
-    const pressureLine = document.getElementById("pressureLine");
 
-    backBtn.addEventListener("click", ()=>showPage("name"));
+    backBtn.addEventListener("click", ()=>go("name"));
     yesBtn.addEventListener("click", ()=>{
-      pressureLine.textContent = "Excellent choice. The universe approves. 🪐✅";
-      showPage("yes");
+      pressureLine.textContent = "Excellent choice. The universe nods respectfully. 🪐✅";
+      go("yes");
     });
-    noBtn.addEventListener("click", ()=>showPage("no"));
 
-    // Funny "No" button behavior (unlocked via Redeem)
-    function makeNoButtonSkittish(){
+    // “NO runs away” upgrade (unlocked on NO page)
+    function makeNoSkittish(){
       const parent = noBtn.parentElement;
       parent.style.position = "relative";
       noBtn.style.position = "relative";
@@ -834,43 +865,43 @@
         const h = 160;
         const x = (Math.random()*w) - w/2;
         const y = (Math.random()*h) - h/3;
-        noBtn.animate(
-          [{transform:`translate(${x}px, ${y}px)`}],
+        noBtn.animate([{transform:`translate(${x}px, ${y}px)`}],
           {duration:160, fill:"forwards", easing:"ease-out"}
         );
       }
-
       noBtn.addEventListener("mouseenter", dodge);
       noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); dodge(); }, {passive:false});
     }
 
+    noBtn.addEventListener("click", ()=>go("no"));
+
     /***********************
-     * YES page fireworks (canvas)
+     * YES fireworks
      ***********************/
     const canvas = document.getElementById("fw");
     const ctx = canvas.getContext("2d");
+    const fwWrap = document.getElementById("fwWrap");
+    const loveSub = document.getElementById("loveSub");
     let fwRAF = null;
     let particles = [];
     let rockets = [];
     let lastT = 0;
 
     function resizeCanvas(){
-      const wrap = document.getElementById("fwWrap");
-      const r = wrap.getBoundingClientRect();
-      const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-      canvas.width = Math.floor(r.width * dpr);
+      const r = fwWrap.getBoundingClientRect();
+      const dpr = Math.max(1, Math.min(2, devicePixelRatio || 1));
+      canvas.width  = Math.floor(r.width * dpr);
       canvas.height = Math.floor(r.height * dpr);
-      canvas.style.width = r.width + "px";
+      canvas.style.width  = r.width + "px";
       canvas.style.height = r.height + "px";
       ctx.setTransform(dpr,0,0,dpr,0,0);
     }
-    window.addEventListener("resize", resizeCanvas);
+    addEventListener("resize", resizeCanvas);
 
     function rand(min,max){ return min + Math.random()*(max-min); }
 
-    function launchRocket(){
-      const w = canvas.clientWidth;
-      const h = canvas.clientHeight;
+    function launch(){
+      const w = canvas.clientWidth, h = canvas.clientHeight;
       rockets.push({
         x: rand(w*0.15, w*0.85),
         y: h + 10,
@@ -887,38 +918,30 @@
         const a = rand(0, Math.PI*2);
         const sp = rand(1.2, 5.8) * (Math.random()<0.18 ? 1.7 : 1);
         particles.push({
-          x,y,
-          vx: Math.cos(a)*sp,
-          vy: Math.sin(a)*sp,
-          life: rand(0.9, 1.6),
-          age: 0,
+          x,y, vx: Math.cos(a)*sp, vy: Math.sin(a)*sp,
+          life: rand(0.9, 1.6), age: 0,
           hue: hue + rand(-18, 18),
           size: rand(1.2, 2.6),
-          drag: 0.985,
-          gravity: 0.06,
+          drag: 0.985, gravity: 0.06,
           sparkle: Math.random()<0.25
         });
       }
-      // heart burst
+      // little heart burst
       for(let i=0;i<10;i++){
         const a = rand(0, Math.PI*2);
         const sp = rand(1.0, 3.4);
         particles.push({
-          x,y,
-          vx: Math.cos(a)*sp,
-          vy: Math.sin(a)*sp,
-          life: rand(1.0, 1.8),
-          age: 0,
+          x,y, vx: Math.cos(a)*sp, vy: Math.sin(a)*sp,
+          life: rand(1.0, 1.8), age: 0,
           hue: rand(330, 360),
           size: rand(2.2, 3.2),
-          drag: 0.99,
-          gravity: 0.045,
+          drag: 0.99, gravity: 0.045,
           heart: true
         });
       }
     }
 
-    function drawHeartParticle(p){
+    function drawHeart(p){
       ctx.save();
       ctx.translate(p.x, p.y);
       ctx.rotate(Math.PI/4);
@@ -933,24 +956,21 @@
       ctx.restore();
     }
 
-    function tickFireworks(t){
+    function tick(t){
       const dt = Math.min(0.033, (t - lastT)/1000 || 0.016);
       lastT = t;
 
-      const w = canvas.clientWidth;
-      const h = canvas.clientHeight;
+      const w = canvas.clientWidth, h = canvas.clientHeight;
 
       ctx.fillStyle = "rgba(0,0,0,0.18)";
       ctx.fillRect(0,0,w,h);
 
-      if(Math.random() < 0.07) launchRocket();
-      if(rockets.length < 2 && Math.random() < 0.5) launchRocket();
+      if(Math.random() < 0.07) launch();
+      if(rockets.length < 2 && Math.random() < 0.5) launch();
 
       for(let i=rockets.length-1;i>=0;i--){
         const r = rockets[i];
-        r.x += r.vx;
-        r.y += r.vy;
-        r.vy += 0.08;
+        r.x += r.vx; r.y += r.vy; r.vy += 0.08;
 
         ctx.beginPath();
         ctx.strokeStyle = `hsla(${r.hue}, 95%, 70%, 0.75)`;
@@ -968,60 +988,44 @@
       for(let i=particles.length-1;i>=0;i--){
         const p = particles[i];
         p.age += dt;
-        if(p.age > p.life){
-          particles.splice(i,1);
-          continue;
-        }
+        if(p.age > p.life){ particles.splice(i,1); continue; }
         p.vx *= p.drag;
         p.vy = p.vy*p.drag + p.gravity;
-        p.x += p.vx;
-        p.y += p.vy;
+        p.x += p.vx; p.y += p.vy;
 
         const alpha = 1 - (p.age/p.life);
         const bright = p.sparkle && Math.random()<0.25 ? 88 : 70;
         ctx.fillStyle = `hsla(${p.hue}, 100%, ${bright}%, ${alpha})`;
 
-        if(p.heart) drawHeartParticle(p);
-        else {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-          ctx.fill();
-        }
+        if(p.heart) drawHeart(p);
+        else { ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill(); }
       }
 
-      fwRAF = requestAnimationFrame(tickFireworks);
+      fwRAF = requestAnimationFrame(tick);
     }
 
     function startFireworks(){
       resizeCanvas();
-      particles = [];
-      rockets = [];
-      for(let i=0;i<3;i++) launchRocket();
-
+      particles = []; rockets = []; lastT = 0;
+      for(let i=0;i<3;i++) launch();
       if(!fwRAF){
         ctx.fillStyle = "rgba(0,0,0,1)";
         ctx.fillRect(0,0,canvas.clientWidth, canvas.clientHeight);
-        lastT = 0;
-        fwRAF = requestAnimationFrame(tickFireworks);
+        fwRAF = requestAnimationFrame(tick);
       }
-
-      const loveSub = document.getElementById("loveSub");
       loveSub.textContent = acceptedName
-        ? `Officially yours, ${acceptedName} 💗 (the bear approves this message)`
-        : `Officially yours 💗 (the bear approves this message)`;
+        ? `Officially yours, ${acceptedName} 💗 (bear-approved, lawyer-reviewed)`
+        : `Officially yours 💗 (bear-approved, lawyer-reviewed)`;
     }
 
     function stopFireworks(){
-      if(fwRAF){
-        cancelAnimationFrame(fwRAF);
-        fwRAF = null;
-      }
+      if(fwRAF){ cancelAnimationFrame(fwRAF); fwRAF = null; }
     }
 
     document.getElementById("replayBtn").addEventListener("click", ()=>{
-      for(let i=0;i<7;i++) setTimeout(launchRocket, i*140);
+      for(let i=0;i<7;i++) setTimeout(launch, i*140);
     });
-    document.getElementById("yesBackBtn").addEventListener("click", ()=>showPage("question"));
+    document.getElementById("yesBackBtn").addEventListener("click", ()=>go("q"));
 
     /***********************
      * NO page
@@ -1034,49 +1038,32 @@
     const noText = document.getElementById("noText");
 
     redeemBtn.addEventListener("click", ()=>{
-      redeemNote.textContent = "Redeemed ✅ Next time, the NO button will panic and run away. (We love character growth.)";
-      noTitle.textContent = "Plot twist: I respect your choice…";
-      noText.textContent =
-        "…but I also installed a playful anti-no system. It’s not mind control. It’s just ✨chaos✨. " +
-        "Go back and try hovering the NO button. 😈";
+      redeemNote.textContent = "Redeemed ✅ The NO button has developed self-preservation instincts.";
+      noTitle.textContent = "I respect your choice…";
+      noText.textContent = "…but I also installed a playful anti-no system. It’s not mind control. It’s just ✨chaos✨. Go back and try tapping “No” again 😈";
       if(!noBtn.dataset.skittish){
-        makeNoButtonSkittish();
+        makeNoSkittish();
         noBtn.dataset.skittish = "1";
       }
       for(let i=0;i<14;i++) setTimeout(spawnHeart, i*45);
     });
 
-    tryAgainBtn.addEventListener("click", ()=>showPage("question"));
-    noBackBtn.addEventListener("click", ()=>showPage("question"));
+    tryAgainBtn.addEventListener("click", ()=>go("q"));
+    noBackBtn.addEventListener("click", ()=>go("q"));
 
     /***********************
      * Prevent skipping without correct name
      ***********************/
-    const _showPage = showPage;
-    showPage = function(key){
-      if((key === "question" || key === "yes" || key === "no") && !acceptedName){
-        Object.values(pages).forEach(p => p.classList.remove("active"));
-        pages.name.classList.add("active");
+    const _go = go;
+    go = function(key){
+      if((key==="q" || key==="yes" || key==="no") && !acceptedName){
+        _go("name");
         nameMsg.textContent = "Nice try 😄 Unlock it with the correct name first!";
         nameMsg.className = "msg bad";
         return;
       }
-      _showPage(key);
+      _go(key);
     };
-
-    // Little fun: random status line updates while idle
-    const statuses = [
-      "System status: romantically operational ✅",
-      "System status: heart engines warmed up 🔥💗",
-      "System status: bear is on duty 🐻📝",
-      "System status: rizz levels: concerningly high 😤",
-      "System status: love.exe is running 💘",
-    ];
-    setInterval(()=>{
-      if(pages.name.classList.contains("active")){
-        statusLine.textContent = statuses[Math.floor(Math.random()*statuses.length)];
-      }
-    }, 4200);
   </script>
 </body>
 </html>
