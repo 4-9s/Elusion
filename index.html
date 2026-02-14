@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Valentine ✨</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Valentine 💘</title>
   <style>
     :root{
       --bg1:#fff0f6;
@@ -12,11 +12,13 @@
       --pink:#ff4d8d;
       --hot:#ff2e7a;
       --rose:#ff7aa8;
-      --card: rgba(255,255,255,.78);
+      --card: rgba(255,255,255,.80);
       --shadow: 0 20px 60px rgba(0,0,0,.12);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
+
+    /* ✅ iPhone fix: allow scrolling, no "stuck half screen" */
     body{
       margin:0;
       font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
@@ -25,7 +27,9 @@
         radial-gradient(1200px 700px at 20% 10%, #fff 0%, transparent 60%),
         radial-gradient(900px 600px at 90% 20%, #fff 0%, transparent 55%),
         linear-gradient(135deg, var(--bg1), var(--bg2));
-      overflow:hidden;
+      overflow-x:hidden;
+      overflow-y:auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     /* Floating hearts background */
@@ -54,22 +58,31 @@
     }
     .heart:before{left:-9px; top:0}
     .heart:after{top:-9px; left:0}
-
     @keyframes floatUp{
       from{ transform: translateY(110vh) rotate(45deg) scale(var(--s,1)); opacity:0 }
       10%{opacity:.55}
       to{ transform: translateY(-20vh) rotate(45deg) scale(var(--s,1)); opacity:0 }
     }
 
-    /* Page framework */
+    /* Framework */
     .app{
       position:relative;
       z-index:1;
-      height:100%;
+
+      /* ✅ iPhone viewport fixes */
+      min-height: 100vh;
+      min-height: 100svh;
+      min-height: 100dvh;
+
       display:grid;
       place-items:center;
       padding:24px;
+      padding-left: max(24px, env(safe-area-inset-left));
+      padding-right:max(24px, env(safe-area-inset-right));
+      padding-top: max(24px, env(safe-area-inset-top));
+      padding-bottom:max(24px, env(safe-area-inset-bottom));
     }
+
     .page{
       width:min(920px, 94vw);
       background: var(--card);
@@ -84,6 +97,14 @@
       overflow:hidden;
     }
     .page.active{display:block}
+
+    /* ✅ allow the card to scroll if needed on small screens */
+    .page{
+      max-height: calc(100dvh - 48px);
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     .page::before{
       content:"";
       position:absolute; inset:-2px;
@@ -101,9 +122,7 @@
       flex-wrap:wrap;
       margin-bottom:16px;
     }
-    .brand{
-      display:flex; align-items:center; gap:12px;
-    }
+    .brand{display:flex; align-items:center; gap:12px;}
     .badge{
       width:44px; height:44px;
       border-radius:14px;
@@ -126,6 +145,7 @@
       60%{transform:translateX(80%) rotate(25deg)}
       100%{transform:translateX(80%) rotate(25deg)}
     }
+
     h1{
       margin:0;
       font-size: clamp(26px, 4vw, 40px);
@@ -134,17 +154,19 @@
     }
     .subtitle{
       margin:6px 0 0;
-      opacity:.8;
+      opacity:.82;
       font-size: 14.5px;
+      line-height:1.45;
     }
 
     .pill{
       padding:10px 14px;
       border-radius:999px;
-      background: rgba(255,255,255,.7);
-      border:1px solid rgba(255,255,255,.8);
+      background: rgba(255,255,255,.72);
+      border:1px solid rgba(255,255,255,.85);
       font-size:13px;
       display:flex; gap:8px; align-items:center;
+      max-width: 100%;
     }
 
     .grid{
@@ -158,8 +180,8 @@
     }
 
     .card{
-      background: rgba(255,255,255,.68);
-      border:1px solid rgba(255,255,255,.75);
+      background: rgba(255,255,255,.70);
+      border:1px solid rgba(255,255,255,.80);
       border-radius:22px;
       padding:18px;
     }
@@ -169,15 +191,17 @@
       gap:10px;
       flex-wrap:wrap;
       margin-top:12px;
+      align-items:stretch;
     }
     input{
       flex:1 1 220px;
       padding:14px 14px;
       border-radius:14px;
       border:1px solid rgba(43,27,42,.15);
-      background: rgba(255,255,255,.8);
+      background: rgba(255,255,255,.85);
       outline:none;
-      font-size:16px;
+      font-size:16px; /* prevent iOS zoom-on-focus */
+      min-height: 48px;
     }
     input:focus{
       border-color: rgba(255,46,122,.5);
@@ -189,11 +213,14 @@
       cursor:pointer;
       border-radius:14px;
       padding:14px 16px;
-      font-weight:700;
+      font-weight:800;
       font-size:15.5px;
       letter-spacing:.01em;
       transition: transform .08s ease, filter .2s ease;
       user-select:none;
+      min-height:48px;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
     button:active{transform: translateY(1px) scale(.99)}
     .btnPrimary{
@@ -202,7 +229,7 @@
       box-shadow: 0 14px 30px rgba(255,46,122,.26);
     }
     .btnGhost{
-      background: rgba(255,255,255,.75);
+      background: rgba(255,255,255,.80);
       border: 1px solid rgba(43,27,42,.12);
       color: var(--ink);
     }
@@ -212,31 +239,18 @@
       box-shadow: 0 14px 30px rgba(124,58,237,.18);
     }
 
-    .msg{
-      margin-top:10px;
-      font-size:14px;
-      min-height:20px;
-    }
+    .msg{ margin-top:10px; font-size:14px; min-height:20px; }
     .msg.good{color:#0a7a4b}
     .msg.bad{color:#b42318}
 
-    /* Cute illustration (pure CSS-ish) */
-    .cuteWrap{
-      display:grid;
-      place-items:center;
-      padding:8px 0;
-    }
-    .cute{
-      width:min(320px, 72vw);
-      aspect-ratio: 1.2/1;
-      position:relative;
-    }
+    /* Cute illustration */
+    .cuteWrap{display:grid; place-items:center; padding:8px 0;}
+    .cute{width:min(320px, 72vw); aspect-ratio: 1.2/1; position:relative;}
     .blob{
       position:absolute; inset:0;
       border-radius: 35% 65% 55% 45% / 45% 45% 55% 55%;
       background: radial-gradient(circle at 30% 20%, #fff, transparent 45%),
                   linear-gradient(135deg, rgba(255,46,122,.35), rgba(255,122,168,.35));
-      filter: blur(.2px);
       animation: wobble 6s ease-in-out infinite;
     }
     @keyframes wobble{
@@ -252,7 +266,7 @@
     }
     .head{
       position:absolute; inset: 14% 12% 16% 12%;
-      background: rgba(255,255,255,.85);
+      background: rgba(255,255,255,.88);
       border: 1px solid rgba(43,27,42,.10);
       border-radius: 38% 38% 42% 42% / 44% 44% 56% 56%;
       box-shadow: 0 16px 40px rgba(0,0,0,.08);
@@ -260,7 +274,7 @@
     .ear{
       position:absolute; top:8%;
       width:22%; height:22%;
-      background: rgba(255,255,255,.85);
+      background: rgba(255,255,255,.88);
       border: 1px solid rgba(43,27,42,.10);
       border-radius: 50%;
     }
@@ -272,9 +286,7 @@
       border-radius:50%;
       background: rgba(255,46,122,.12);
     }
-    .face{
-      position:absolute; inset: 34% 18% 20% 18%;
-    }
+    .face{position:absolute; inset: 34% 18% 20% 18%;}
     .eye{
       position:absolute; top:18%;
       width:14%; height:18%;
@@ -295,7 +307,6 @@
       width:18%; height:18%;
       background: rgba(255,46,122,.16);
       border-radius: 999px;
-      filter: blur(.2px);
     }
     .cheek.left{left:10%}
     .cheek.right{right:10%}
@@ -350,8 +361,11 @@
       border-radius:999px;
       background: rgba(255,255,255,.75);
       border:1px solid rgba(43,27,42,.12);
-      font-weight:700;
-      margin-top:6px;
+      font-weight:900;
+      max-width: 100%;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .btnRow{
       display:flex;
@@ -361,15 +375,16 @@
       align-items:center;
     }
     .tinyNote{
-      opacity:.75;
+      opacity:.78;
       font-size:13px;
       margin-top:10px;
+      line-height:1.45;
     }
 
-    /* Fireworks page */
+    /* YES page */
     .fireworksWrap{
       position:relative;
-      height: min(70vh, 520px);
+      height: min(70svh, 520px);
       border-radius: 22px;
       overflow:hidden;
       background: radial-gradient(900px 420px at 50% 30%, rgba(255,255,255,.18), transparent 60%),
@@ -377,7 +392,6 @@
       border: 1px solid rgba(255,255,255,.12);
     }
     canvas{display:block; width:100%; height:100%}
-
     .overlayLove{
       position:absolute; inset:0;
       display:grid; place-items:center;
@@ -397,12 +411,13 @@
       color: rgba(255,255,255,.88);
       font-size: 15px;
       opacity:.95;
+      line-height:1.45;
     }
 
-    /* "No" page shenanigans */
+    /* NO page */
     .sadStage{
       position:relative;
-      height: min(64vh, 460px);
+      height: min(64svh, 460px);
       border-radius: 22px;
       overflow:hidden;
       background: radial-gradient(900px 500px at 40% 30%, rgba(255,255,255,.22), transparent 62%),
@@ -443,7 +458,7 @@
       max-width: 56ch;
       color: rgba(255,255,255,.84);
       font-size: 15px;
-      line-height:1.45;
+      line-height:1.5;
     }
     .tinyBtnRow{
       display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
@@ -460,6 +475,7 @@
       flex-wrap:wrap;
       opacity:.75;
       font-size:12.5px;
+      line-height:1.35;
     }
     .kbd{
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -468,10 +484,14 @@
       background: rgba(255,255,255,.72);
       border:1px solid rgba(43,27,42,.12);
     }
+
+    /* Reduced motion friendly */
+    @media (prefers-reduced-motion: reduce){
+      .heart, .badge::after, .blob, .floatingMiniHeart, .rain{animation:none !important}
+    }
   </style>
 </head>
 <body>
-
   <div class="hearts" id="hearts"></div>
 
   <div class="app">
@@ -483,7 +503,7 @@
             <div class="badge" aria-hidden="true">❤</div>
             <div>
               <h1>Valentine Access Portal</h1>
-              <p class="subtitle">Enter the secret name to unlock the cute stuff ✨</p>
+              <p class="subtitle">Enter the secret name to unlock the cute stuff ✨ (the bear is a strict bouncer)</p>
             </div>
           </div>
           <div class="pill" title="Hint">
@@ -494,20 +514,20 @@
 
         <div class="grid">
           <div class="card">
-            <div style="font-weight:800; font-size:18px;">What’s your name?</div>
-            <div class="subtitle">Be honest. The hearts are watching.</div>
+            <div style="font-weight:900; font-size:18px;">What’s your name?</div>
+            <div class="subtitle">Wrong answers will be judged by a committee of hearts.</div>
 
             <div class="inputRow">
               <input id="nameInput" placeholder="Type the name here…" autocomplete="off" />
               <button class="btnPrimary" id="unlockBtn">Unlock 💘</button>
-              <button class="btnGhost" id="randomBtn" title="Just for fun">Sprinkle Hearts</button>
+              <button class="btnGhost" id="randomBtn" title="Just for fun">Heart Confetti</button>
             </div>
 
             <div class="msg" id="nameMsg"></div>
 
             <div class="footer">
               <div>Press <span class="kbd">Enter</span> to submit</div>
-              <div>Made with maximum romantic effort™</div>
+              <div id="statusLine">System status: romantically operational ✅</div>
             </div>
           </div>
 
@@ -530,8 +550,10 @@
                 </div>
               </div>
             </div>
-            <div style="margin-top:10px; font-weight:800;">Cute Bear Guard</div>
-            <div class="subtitle" style="text-align:center">Only lets the right name pass 🐻💗</div>
+            <div style="margin-top:10px; font-weight:900;">Cute Bear Guard</div>
+            <div class="subtitle" style="text-align:center">
+              He checks names, vibes, and whether you’ve hydrated today 🐻💗
+            </div>
           </div>
         </div>
       </div>
@@ -545,7 +567,7 @@
             <div class="badge" aria-hidden="true">💌</div>
             <div>
               <h1>One Important Question…</h1>
-              <p class="subtitle">No pressure (okay maybe a tiny bit).</p>
+              <p class="subtitle">This is the part where the music swells dramatically 🎻</p>
             </div>
           </div>
           <div class="nameTag" id="whoTag">👤</div>
@@ -554,7 +576,7 @@
         <div class="grid">
           <div class="card">
             <div class="bigQ">Will you be my valentine? 💘</div>
-            <div class="subtitle">Pick wisely. The universe is taking notes.</div>
+            <div class="subtitle">Choose wisely. The bear is taking notes on a clipboard.</div>
 
             <div class="btnRow">
               <button class="btnPrimary" id="yesBtn">YES!! 🎆</button>
@@ -562,28 +584,28 @@
               <button class="btnGhost" id="backBtn">Back</button>
             </div>
 
-            <div class="tinyNote">
-              Pro tip: “Yes” has fireworks. “No” has… consequences. (Cute ones.)
+            <div class="tinyNote" id="pressureLine">
+              “Yes” includes fireworks. “No” includes… creative consequences (still cute, I promise).
             </div>
           </div>
 
           <div class="card">
-            <div style="font-weight:900; font-size:18px;">A tiny poem</div>
+            <div style="font-weight:900; font-size:18px;">A tiny poem (certified cringe)</div>
             <div class="subtitle" style="margin-top:10px; line-height:1.55">
               Roses are red,<br/>
               Violets are blue,<br/>
-              I made this lil’ page<br/>
-              Just to ask you 💗
+              This little webpage<br/>
+              Was made just for you 💗
             </div>
-            <div style="margin-top:14px; opacity:.8; font-size:13px">
-              (Yes, I coded the hearts. Yes, they’re adorable.)
+            <div style="margin-top:14px; opacity:.85; font-size:13px; line-height:1.45">
+              Legal disclaimer: The author may blush if you press “Yes”.
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PAGE 3: YES - Fireworks + image -->
+    <!-- PAGE 3: YES -->
     <section class="page" id="page-yes">
       <div class="content">
         <header>
@@ -591,7 +613,7 @@
             <div class="badge" aria-hidden="true">🎇</div>
             <div>
               <h1>YAAAY!! 💖</h1>
-              <p class="subtitle">Okay hold still while the sky celebrates.</p>
+              <p class="subtitle">Deploying celebration protocols… please keep arms and hearts inside the ride.</p>
             </div>
           </div>
           <div class="pill"><span aria-hidden="true">✨</span><span>Fireworks mode: ON</span></div>
@@ -603,6 +625,29 @@
             <div>
               <h2 class="loveTitle">Happy Valentine’s! 💞</h2>
               <p class="loveSub" id="loveSub">You just made my whole day.</p>
+
+              <!-- Cute image (no external files needed) -->
+              <div style="margin-top:14px; display:grid; place-items:center;">
+                <svg width="160" height="160" viewBox="0 0 200 200" aria-label="Cute heart character">
+                  <defs>
+                    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="#ff2e7a"/>
+                      <stop offset="1" stop-color="#ff7aa8"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M100 175s-60-35-82-72C-1 66 18 30 54 30c18 0 34 10 46 25 12-15 28-25 46-25 36 0 55 36 36 73-22 37-82 72-82 72z"
+                        fill="url(#g)" stroke="rgba(255,255,255,.55)" stroke-width="4"/>
+                  <circle cx="75" cy="90" r="8" fill="#2b1b2a"/>
+                  <circle cx="125" cy="90" r="8" fill="#2b1b2a"/>
+                  <path d="M85 112c8 10 22 10 30 0" fill="none" stroke="#2b1b2a" stroke-width="6" stroke-linecap="round"/>
+                  <circle cx="62" cy="108" r="10" fill="rgba(255,255,255,.35)"/>
+                  <circle cx="138" cy="108" r="10" fill="rgba(255,255,255,.35)"/>
+                </svg>
+                <div style="color:rgba(255,255,255,.9); font-size:13px; opacity:.95;">
+                  This heart is now your emotional support mascot.
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -614,7 +659,7 @@
       </div>
     </section>
 
-    <!-- PAGE 4: NO - show skills -->
+    <!-- PAGE 4: NO -->
     <section class="page" id="page-no">
       <div class="content">
         <header>
@@ -622,7 +667,7 @@
             <div class="badge" aria-hidden="true">🫠</div>
             <div>
               <h1>Oh. Okay. 😭</h1>
-              <p class="subtitle">It’s fine. I’m totally fine. (I’m not.)</p>
+              <p class="subtitle">I will simply go sit in the corner and dramatically stare out a window.</p>
             </div>
           </div>
           <div class="pill"><span aria-hidden="true">🌧️</span><span>Drama weather enabled</span></div>
@@ -634,16 +679,15 @@
             <div>
               <h2 class="noTitle" id="noTitle">My heart just did a lil’ backflip.</h2>
               <p class="noText" id="noText">
-                But hey—your honesty is valid. To cope, I have hired a professional cloud to rain gently,
-                and I will now attempt to bribe you with a mini game:
-                press “Redeem” and I’ll make the “NO” button run away next time. 😈
+                But hey—your honesty is valid. To cope, I hired a cloud to cry on my behalf.
+                Press “Redeem” to unlock a totally unnecessary upgrade: the “NO” button will run away next time. 😈
               </p>
               <div class="tinyBtnRow">
                 <button class="btnDanger" id="redeemBtn">Redeem 😈</button>
                 <button class="btnGhost" id="tryAgainBtn">Try Again 💘</button>
                 <button class="btnGhost" id="noBackBtn">Back</button>
               </div>
-              <div class="tinyNote" id="redeemNote" style="color:rgba(255,255,255,.82)"></div>
+              <div class="tinyNote" id="redeemNote" style="color:rgba(255,255,255,.84)"></div>
             </div>
           </div>
         </div>
@@ -657,10 +701,10 @@
      * CONFIG YOU SHOULD EDIT
      ***********************/
     // Set this to the EXACT name you want to accept:
-    const CORRECT_NAME = "Reem"; // <-- change me (example: "Aisha")
+    const CORRECT_NAME = "YourNameHere"; // e.g. "Aisha"
 
     /***********************
-     * Simple page router
+     * Router
      ***********************/
     const pages = {
       name: document.getElementById("page-name"),
@@ -673,16 +717,17 @@
       Object.values(pages).forEach(p => p.classList.remove("active"));
       pages[key].classList.add("active");
 
-      // start/stop fireworks depending on page
-      if(key === "yes"){
-        startFireworks();
-      } else {
-        stopFireworks();
-      }
+      // fireworks lifecycle
+      if(key === "yes") startFireworks();
+      else stopFireworks();
+
+      // scroll card to top when switching (nice on iPhone)
+      pages[key].scrollTop = 0;
+      window.scrollTo({top:0, behavior:"smooth"});
     }
 
     /***********************
-     * Floating hearts generator
+     * Hearts background
      ***********************/
     const hearts = document.getElementById("hearts");
     function spawnHeart(){
@@ -698,25 +743,35 @@
       hearts.appendChild(h);
       setTimeout(()=>h.remove(), dur*1000);
     }
-    // steady stream
-    let heartInterval = setInterval(spawnHeart, 260);
-    // initial burst
-    for(let i=0;i<20;i++) setTimeout(spawnHeart, i*60);
+
+    // iPhone perf: fewer hearts on small screens
+    const isSmall = Math.min(window.innerWidth, window.innerHeight) < 420;
+    const heartRate = isSmall ? 340 : 260;
+    let heartInterval = setInterval(spawnHeart, heartRate);
+    for(let i=0;i<(isSmall?14:22);i++) setTimeout(spawnHeart, i*60);
 
     /***********************
-     * Name gate logic
+     * Name gate
      ***********************/
     const nameInput = document.getElementById("nameInput");
     const unlockBtn = document.getElementById("unlockBtn");
     const randomBtn = document.getElementById("randomBtn");
     const nameMsg = document.getElementById("nameMsg");
     const whoTag = document.getElementById("whoTag");
+    const statusLine = document.getElementById("statusLine");
 
     let acceptedName = "";
 
-    function normalize(s){
-      return (s || "").trim().toLowerCase();
-    }
+    function normalize(s){ return (s || "").trim().toLowerCase(); }
+
+    const wrongLines = [
+      "Hmm… that name feels suspiciously incorrect 👀",
+      "The bear says: nope 🐻",
+      "Not the secret name! The hearts demand accuracy 💗",
+      "Nice try, hacker. Valentine security is top-tier 😤",
+      "Denied. Please present your correct-name license.",
+      "Access rejected by the Department of Romance™",
+    ];
 
     function tryUnlock(){
       const typed = nameInput.value.trim();
@@ -730,18 +785,12 @@
         whoTag.textContent = "👤 " + acceptedName;
         nameMsg.textContent = "Correct! Proceeding to the question… 💘";
         nameMsg.className = "msg good";
+        statusLine.textContent = "System status: authorized rizz detected ✅";
         setTimeout(()=>showPage("question"), 650);
       } else {
-        // playful wrong answer responses
-        const lines = [
-          "Hmm… that name feels suspiciously incorrect 👀",
-          "Close… (or not). Try again 😅",
-          "The bear says: nope 🐻",
-          "Not the secret name! The hearts demand accuracy 💗",
-        ];
-        nameMsg.textContent = lines[Math.floor(Math.random()*lines.length)];
+        nameMsg.textContent = wrongLines[Math.floor(Math.random()*wrongLines.length)];
         nameMsg.className = "msg bad";
-        // tiny shake effect
+        statusLine.textContent = "System status: suspicious vibes detected ⚠️";
         pages.name.animate(
           [{transform:"translateX(0)"},{transform:"translateX(-6px)"},{transform:"translateX(6px)"},{transform:"translateX(0)"}],
           {duration:220, iterations:1}
@@ -750,9 +799,7 @@
     }
 
     unlockBtn.addEventListener("click", tryUnlock);
-    nameInput.addEventListener("keydown", (e)=>{
-      if(e.key === "Enter") tryUnlock();
-    });
+    nameInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") tryUnlock(); });
 
     randomBtn.addEventListener("click", ()=>{
       for(let i=0;i<18;i++) setTimeout(spawnHeart, i*40);
@@ -761,32 +808,38 @@
     });
 
     /***********************
-     * Question page logic
+     * Question page
      ***********************/
     const yesBtn = document.getElementById("yesBtn");
     const noBtn  = document.getElementById("noBtn");
     const backBtn= document.getElementById("backBtn");
-
-    let noRunsAway = false;
+    const pressureLine = document.getElementById("pressureLine");
 
     backBtn.addEventListener("click", ()=>showPage("name"));
-    yesBtn.addEventListener("click", ()=>showPage("yes"));
+    yesBtn.addEventListener("click", ()=>{
+      pressureLine.textContent = "Excellent choice. The universe approves. 🪐✅";
+      showPage("yes");
+    });
     noBtn.addEventListener("click", ()=>showPage("no"));
 
-    // "show skills": if redeemed, NO button runs away playfully
+    // Funny "No" button behavior (unlocked via Redeem)
     function makeNoButtonSkittish(){
-      const pad = 10;
       const parent = noBtn.parentElement;
       parent.style.position = "relative";
       noBtn.style.position = "relative";
 
       function dodge(){
+        const pad = 10;
         const w = parent.clientWidth - noBtn.offsetWidth - pad*2;
-        const h = 160; // vertical playground
+        const h = 160;
         const x = (Math.random()*w) - w/2;
         const y = (Math.random()*h) - h/3;
-        noBtn.animate([{transform:`translate(${x}px, ${y}px)`}], {duration:160, fill:"forwards", easing:"ease-out"});
+        noBtn.animate(
+          [{transform:`translate(${x}px, ${y}px)`}],
+          {duration:160, fill:"forwards", easing:"ease-out"}
+        );
       }
+
       noBtn.addEventListener("mouseenter", dodge);
       noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); dodge(); }, {passive:false});
     }
@@ -824,7 +877,7 @@
         vx: rand(-0.6, 0.6),
         vy: rand(-8.6, -11.2),
         targetY: rand(h*0.18, h*0.45),
-        hue: rand(315, 360), // pink-ish
+        hue: rand(315, 360),
       });
     }
 
@@ -846,10 +899,10 @@
           sparkle: Math.random()<0.25
         });
       }
-      // tiny heart burst for extra valentine energy
-      for(let i=0;i<8;i++){
+      // heart burst
+      for(let i=0;i<10;i++){
         const a = rand(0, Math.PI*2);
-        const sp = rand(1.0, 3.2);
+        const sp = rand(1.0, 3.4);
         particles.push({
           x,y,
           vx: Math.cos(a)*sp,
@@ -871,10 +924,8 @@
       ctx.rotate(Math.PI/4);
       const s = p.size*1.8;
       ctx.beginPath();
-      ctx.moveTo(0, 0);
       ctx.rect(-s/2, -s/2, s, s);
       ctx.fill();
-      // circles
       ctx.beginPath();
       ctx.arc(-s/2, 0, s/2, 0, Math.PI*2);
       ctx.arc(0, -s/2, s/2, 0, Math.PI*2);
@@ -889,21 +940,18 @@
       const w = canvas.clientWidth;
       const h = canvas.clientHeight;
 
-      // fade frame
       ctx.fillStyle = "rgba(0,0,0,0.18)";
       ctx.fillRect(0,0,w,h);
 
-      // occasional launches
       if(Math.random() < 0.07) launchRocket();
       if(rockets.length < 2 && Math.random() < 0.5) launchRocket();
 
-      // rockets
       for(let i=rockets.length-1;i>=0;i--){
         const r = rockets[i];
         r.x += r.vx;
         r.y += r.vy;
-        r.vy += 0.08; // gravity
-        // trail
+        r.vy += 0.08;
+
         ctx.beginPath();
         ctx.strokeStyle = `hsla(${r.hue}, 95%, 70%, 0.75)`;
         ctx.lineWidth = 2;
@@ -917,7 +965,6 @@
         }
       }
 
-      // particles
       for(let i=particles.length-1;i>=0;i--){
         const p = particles[i];
         p.age += dt;
@@ -934,9 +981,8 @@
         const bright = p.sparkle && Math.random()<0.25 ? 88 : 70;
         ctx.fillStyle = `hsla(${p.hue}, 100%, ${bright}%, ${alpha})`;
 
-        if(p.heart){
-          drawHeartParticle(p);
-        } else {
+        if(p.heart) drawHeartParticle(p);
+        else {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
           ctx.fill();
@@ -948,21 +994,21 @@
 
     function startFireworks(){
       resizeCanvas();
-      // reset and launch a small celebration immediately
       particles = [];
       rockets = [];
       for(let i=0;i<3;i++) launchRocket();
+
       if(!fwRAF){
         ctx.fillStyle = "rgba(0,0,0,1)";
         ctx.fillRect(0,0,canvas.clientWidth, canvas.clientHeight);
         lastT = 0;
         fwRAF = requestAnimationFrame(tickFireworks);
       }
-      // personalized line
+
       const loveSub = document.getElementById("loveSub");
       loveSub.textContent = acceptedName
-        ? `Officially yours, ${acceptedName} 💗`
-        : `Officially yours 💗`;
+        ? `Officially yours, ${acceptedName} 💗 (the bear approves this message)`
+        : `Officially yours 💗 (the bear approves this message)`;
     }
 
     function stopFireworks(){
@@ -973,13 +1019,12 @@
     }
 
     document.getElementById("replayBtn").addEventListener("click", ()=>{
-      // quick burst
-      for(let i=0;i<6;i++) setTimeout(launchRocket, i*140);
+      for(let i=0;i<7;i++) setTimeout(launchRocket, i*140);
     });
     document.getElementById("yesBackBtn").addEventListener("click", ()=>showPage("question"));
 
     /***********************
-     * NO page logic
+     * NO page
      ***********************/
     const redeemBtn = document.getElementById("redeemBtn");
     const tryAgainBtn = document.getElementById("tryAgainBtn");
@@ -989,8 +1034,7 @@
     const noText = document.getElementById("noText");
 
     redeemBtn.addEventListener("click", ()=>{
-      noRunsAway = true;
-      redeemNote.textContent = "Redeemed ✅ Next time, the NO button will panic and run away.";
+      redeemNote.textContent = "Redeemed ✅ Next time, the NO button will panic and run away. (We love character growth.)";
       noTitle.textContent = "Plot twist: I respect your choice…";
       noText.textContent =
         "…but I also installed a playful anti-no system. It’s not mind control. It’s just ✨chaos✨. " +
@@ -999,37 +1043,40 @@
         makeNoButtonSkittish();
         noBtn.dataset.skittish = "1";
       }
-      // little heart burst even in sadness
-      for(let i=0;i<12;i++) setTimeout(spawnHeart, i*50);
+      for(let i=0;i<14;i++) setTimeout(spawnHeart, i*45);
     });
 
     tryAgainBtn.addEventListener("click", ()=>showPage("question"));
     noBackBtn.addEventListener("click", ()=>showPage("question"));
 
     /***********************
-     * Small safety: block question page if name not accepted
+     * Prevent skipping without correct name
      ***********************/
-    const originalShowPage = showPage;
+    const _showPage = showPage;
     showPage = function(key){
       if((key === "question" || key === "yes" || key === "no") && !acceptedName){
-        // if they try to jump without unlocking
+        Object.values(pages).forEach(p => p.classList.remove("active"));
         pages.name.classList.add("active");
-        pages.question.classList.remove("active");
-        pages.yes.classList.remove("active");
-        pages.no.classList.remove("active");
         nameMsg.textContent = "Nice try 😄 Unlock it with the correct name first!";
         nameMsg.className = "msg bad";
         return;
       }
-      originalShowPage(key);
+      _showPage(key);
     };
 
-    /***********************
-     * Optional: make NO button only run away if redeemed
-     ***********************/
-    // If redeemed, enable skittish behavior (already handled above).
-    // Otherwise, it's a normal button.
-
+    // Little fun: random status line updates while idle
+    const statuses = [
+      "System status: romantically operational ✅",
+      "System status: heart engines warmed up 🔥💗",
+      "System status: bear is on duty 🐻📝",
+      "System status: rizz levels: concerningly high 😤",
+      "System status: love.exe is running 💘",
+    ];
+    setInterval(()=>{
+      if(pages.name.classList.contains("active")){
+        statusLine.textContent = statuses[Math.floor(Math.random()*statuses.length)];
+      }
+    }, 4200);
   </script>
 </body>
 </html>
