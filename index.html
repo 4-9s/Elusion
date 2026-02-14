@@ -1,388 +1,1035 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Elusion — Website Under Maintenance</title>
-  <link rel="icon" type="image/png" href="elusion-logo.png"> 
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta property="og:title" content="Elusion" />
-<meta property="og:description" content="Modern Digital Products — FiveM Scripts, Services, and More." />
-<meta property="og:image" content="https://elusion.site/elusion-logo.png" />
-<meta property="og:url" content="https://elusion.site" />
-<meta name="theme-color" content="#96cb9d" />
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Elusion" />
-<meta name="twitter:description" content="Modern Digital Products — FiveM Scripts, Services, and More." />
-<meta name="twitter:image" content="https://elusion.site/elusion-logo.png" />
-
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Valentine ✨</title>
   <style>
-
-    /* Why are you looking here? Discord Username 8_cw | Made by the one and only AFOUND */
-    :root {
-      --green: #96cb9d;
-      --green-soft: #c6e6cc;
-      --bg-dark: #020617;
-      --text-muted: #9ca3af;
+    :root{
+      --bg1:#fff0f6;
+      --bg2:#ffe3ee;
+      --ink:#2b1b2a;
+      --pink:#ff4d8d;
+      --hot:#ff2e7a;
+      --rose:#ff7aa8;
+      --card: rgba(255,255,255,.78);
+      --shadow: 0 20px 60px rgba(0,0,0,.12);
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Poppins", sans-serif;
-      color: #f9fafb;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(150, 203, 157, 0.16), transparent 55%),
-        radial-gradient(circle at bottom right, #020617 0, #000 60%);
-      display: flex;
-      align-items: stretch;
-      justify-content: center;
+        radial-gradient(1200px 700px at 20% 10%, #fff 0%, transparent 60%),
+        radial-gradient(900px 600px at 90% 20%, #fff 0%, transparent 55%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow:hidden;
     }
 
-    .page-shell {
-      flex: 1;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1.5rem 2rem;
-      display: flex;
-      flex-direction: column;
+    /* Floating hearts background */
+    .hearts{
+      position:fixed; inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:0;
+      filter: drop-shadow(0 8px 10px rgba(0,0,0,.08));
+    }
+    .heart{
+      position:absolute;
+      width:18px; height:18px;
+      transform: rotate(45deg);
+      background: linear-gradient(135deg, #ff6aa2, #ff2e7a);
+      border-radius: 4px;
+      opacity:.55;
+      animation: floatUp linear infinite;
+    }
+    .heart:before,.heart:after{
+      content:"";
+      position:absolute;
+      width:18px;height:18px;
+      background: inherit;
+      border-radius:50%;
+    }
+    .heart:before{left:-9px; top:0}
+    .heart:after{top:-9px; left:0}
+
+    @keyframes floatUp{
+      from{ transform: translateY(110vh) rotate(45deg) scale(var(--s,1)); opacity:0 }
+      10%{opacity:.55}
+      to{ transform: translateY(-20vh) rotate(45deg) scale(var(--s,1)); opacity:0 }
     }
 
-
-
-    .top-bar {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 1.5rem;
-      animation: fadeDown 0.7s ease-out forwards;
-      opacity: 0;
+    /* Page framework */
+    .app{
+      position:relative;
+      z-index:1;
+      height:100%;
+      display:grid;
+      place-items:center;
+      padding:24px;
     }
-
-    .logo-img {
-      width: 36px;
-      height: 36px;
-      object-fit: contain;
-      border-radius: 999px;
-      box-shadow: 0 0 0 2px rgba(150, 203, 157, 0.4);
-      animation: float 3.2s ease-in-out infinite alternate;
-    }
-
-    .brand-text {
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-size: 0.9rem;
-      color: var(--green-soft);
-    }
-
-
-
-    .main-row {
-      flex: 1;
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-      gap: 2.5rem;
-      align-items: center;
-    }
-
-
-    .copy-block {
-      max-width: 520px;
-      animation: fadeUp 0.8s ease-out forwards;
-      opacity: 0;
-    }
-
-    .kicker {
-      font-size: 0.78rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: rgba(198, 246, 213, 0.9);
-      margin-bottom: 0.7rem;
-    }
-
-    h1 {
-      font-size: clamp(2rem, 3.3vw, 2.6rem);
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-    }
-
-    .highlight {
-      background: linear-gradient(120deg, #96cb9d, #ffffff);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .lead {
-      margin-top: 0.4rem;
-      margin-bottom: 1.2rem;
-      color: var(--text-muted);
-      font-size: 0.98rem;
-    }
-
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-bottom: 1.4rem;
-    }
-
-    .pill {
-      padding: 0.28rem 0.9rem;
-      border-radius: 999px;
-      border: 1px solid rgba(150, 203, 157, 0.6);
-      font-size: 0.8rem;
-      color: var(--green-soft);
-      background: rgba(3, 10, 17, 0.9);
+    .page{
+      width:min(920px, 94vw);
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 26px;
+      display:none;
+      position:relative;
+      overflow:hidden;
+    }
+    .page.active{display:block}
+    .page::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(200px 200px at 15% 15%, rgba(255,77,141,.25), transparent 60%),
+        radial-gradient(240px 240px at 85% 25%, rgba(255,46,122,.22), transparent 65%),
+        radial-gradient(280px 280px at 55% 110%, rgba(255,122,168,.20), transparent 55%);
+      pointer-events:none;
+      z-index:0;
+    }
+    .content{position:relative; z-index:1}
+
+    header{
+      display:flex; gap:18px; align-items:center; justify-content:space-between;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+    }
+    .badge{
+      width:44px; height:44px;
+      border-radius:14px;
+      background: linear-gradient(135deg, var(--hot), var(--rose));
+      display:grid; place-items:center;
+      color:white;
+      box-shadow: 0 12px 24px rgba(255,46,122,.28);
+      position:relative;
+      overflow:hidden;
+    }
+    .badge::after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+      transform: rotate(25deg);
+      animation: sheen 2.7s infinite;
+    }
+    @keyframes sheen{
+      0%{transform:translateX(-60%) rotate(25deg)}
+      60%{transform:translateX(80%) rotate(25deg)}
+      100%{transform:translateX(80%) rotate(25deg)}
+    }
+    h1{
+      margin:0;
+      font-size: clamp(26px, 4vw, 40px);
+      line-height:1.05;
+      letter-spacing:-0.02em;
+    }
+    .subtitle{
+      margin:6px 0 0;
+      opacity:.8;
+      font-size: 14.5px;
     }
 
-    .primary-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.3rem;
-      padding: 0.6rem 1.4rem;
+    .pill{
+      padding:10px 14px;
+      border-radius:999px;
+      background: rgba(255,255,255,.7);
+      border:1px solid rgba(255,255,255,.8);
+      font-size:13px;
+      display:flex; gap:8px; align-items:center;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:18px;
+      margin-top:14px;
+    }
+    @media (max-width:860px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      background: rgba(255,255,255,.68);
+      border:1px solid rgba(255,255,255,.75);
+      border-radius:22px;
+      padding:18px;
+    }
+
+    .inputRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+    input{
+      flex:1 1 220px;
+      padding:14px 14px;
+      border-radius:14px;
+      border:1px solid rgba(43,27,42,.15);
+      background: rgba(255,255,255,.8);
+      outline:none;
+      font-size:16px;
+    }
+    input:focus{
+      border-color: rgba(255,46,122,.5);
+      box-shadow: 0 0 0 4px rgba(255,46,122,.12);
+    }
+
+    button{
+      border:0;
+      cursor:pointer;
+      border-radius:14px;
+      padding:14px 16px;
+      font-weight:700;
+      font-size:15.5px;
+      letter-spacing:.01em;
+      transition: transform .08s ease, filter .2s ease;
+      user-select:none;
+    }
+    button:active{transform: translateY(1px) scale(.99)}
+    .btnPrimary{
+      background: linear-gradient(135deg, var(--hot), var(--rose));
+      color:white;
+      box-shadow: 0 14px 30px rgba(255,46,122,.26);
+    }
+    .btnGhost{
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(43,27,42,.12);
+      color: var(--ink);
+    }
+    .btnDanger{
+      background: linear-gradient(135deg, #7c3aed, #ff2e7a);
+      color:white;
+      box-shadow: 0 14px 30px rgba(124,58,237,.18);
+    }
+
+    .msg{
+      margin-top:10px;
+      font-size:14px;
+      min-height:20px;
+    }
+    .msg.good{color:#0a7a4b}
+    .msg.bad{color:#b42318}
+
+    /* Cute illustration (pure CSS-ish) */
+    .cuteWrap{
+      display:grid;
+      place-items:center;
+      padding:8px 0;
+    }
+    .cute{
+      width:min(320px, 72vw);
+      aspect-ratio: 1.2/1;
+      position:relative;
+    }
+    .blob{
+      position:absolute; inset:0;
+      border-radius: 35% 65% 55% 45% / 45% 45% 55% 55%;
+      background: radial-gradient(circle at 30% 20%, #fff, transparent 45%),
+                  linear-gradient(135deg, rgba(255,46,122,.35), rgba(255,122,168,.35));
+      filter: blur(.2px);
+      animation: wobble 6s ease-in-out infinite;
+    }
+    @keyframes wobble{
+      0%,100%{transform: rotate(-2deg) scale(1)}
+      50%{transform: rotate(2deg) scale(1.02)}
+    }
+    .bear{
+      position:absolute;
+      left:50%; top:52%;
+      transform: translate(-50%,-50%);
+      width:62%;
+      height:62%;
+    }
+    .head{
+      position:absolute; inset: 14% 12% 16% 12%;
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(43,27,42,.10);
+      border-radius: 38% 38% 42% 42% / 44% 44% 56% 56%;
+      box-shadow: 0 16px 40px rgba(0,0,0,.08);
+    }
+    .ear{
+      position:absolute; top:8%;
+      width:22%; height:22%;
+      background: rgba(255,255,255,.85);
+      border: 1px solid rgba(43,27,42,.10);
+      border-radius: 50%;
+    }
+    .ear.left{left:10%}
+    .ear.right{right:10%}
+    .ear::after{
+      content:"";
+      position:absolute; inset:28%;
+      border-radius:50%;
+      background: rgba(255,46,122,.12);
+    }
+    .face{
+      position:absolute; inset: 34% 18% 20% 18%;
+    }
+    .eye{
+      position:absolute; top:18%;
+      width:14%; height:18%;
+      background: var(--ink);
       border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #02140c;
-      background: linear-gradient(135deg, #96cb9d, #6cb678);
-      box-shadow: 0 18px 45px rgba(150, 203, 157, 0.6);
-      text-decoration: none;
-      margin-top: 0.4rem;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+    }
+    .eye.left{left:22%}
+    .eye.right{right:22%}
+    .sparkle{
+      position:absolute; width:35%; height:35%;
+      background: rgba(255,255,255,.9);
+      border-radius: 50%;
+      top:10%; left:55%;
+      transform: rotate(15deg);
+    }
+    .cheek{
+      position:absolute; top:50%;
+      width:18%; height:18%;
+      background: rgba(255,46,122,.16);
+      border-radius: 999px;
+      filter: blur(.2px);
+    }
+    .cheek.left{left:10%}
+    .cheek.right{right:10%}
+    .nose{
+      position:absolute; left:50%; top:48%;
+      transform: translateX(-50%);
+      width:16%; height:12%;
+      background: rgba(43,27,42,.85);
+      border-radius: 0 0 14px 14px / 0 0 18px 18px;
+    }
+    .smile{
+      position:absolute; left:50%; top:58%;
+      transform: translateX(-50%);
+      width:28%; height:20%;
+      border-bottom: 3px solid rgba(43,27,42,.75);
+      border-radius: 0 0 70px 70px;
+      opacity:.9;
+    }
+    .floatingMiniHeart{
+      position:absolute;
+      width:18px; height:18px;
+      left:78%; top:14%;
+      transform: rotate(45deg);
+      background: linear-gradient(135deg, #ff6aa2, #ff2e7a);
+      border-radius: 4px;
+      animation: pop 1.8s ease-in-out infinite;
+    }
+    .floatingMiniHeart:before,.floatingMiniHeart:after{
+      content:"";
+      position:absolute;
+      width:18px;height:18px;
+      background:inherit;
+      border-radius:50%;
+    }
+    .floatingMiniHeart:before{left:-9px; top:0}
+    .floatingMiniHeart:after{top:-9px; left:0}
+    @keyframes pop{
+      0%,100%{transform: translateY(0) rotate(45deg) scale(1)}
+      50%{transform: translateY(-10px) rotate(45deg) scale(1.08)}
     }
 
-    .primary-btn:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.04);
-      box-shadow: 0 22px 60px rgba(150, 203, 157, 0.75);
+    /* Question page */
+    .bigQ{
+      font-size: clamp(28px, 4.5vw, 52px);
+      line-height: 1.02;
+      margin: 8px 0 10px;
+      letter-spacing: -0.03em;
+    }
+    .nameTag{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:10px 12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.75);
+      border:1px solid rgba(43,27,42,.12);
+      font-weight:700;
+      margin-top:6px;
+    }
+    .btnRow{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      align-items:center;
+    }
+    .tinyNote{
+      opacity:.75;
+      font-size:13px;
+      margin-top:10px;
     }
 
-
-
-    .hero-side {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: fadeUp 0.9s ease-out forwards;
-      opacity: 0;
-    }
-
-    .hero-shell {
-      position: relative;
-      max-width: 420px;
-      width: 100%;
-    }
-
-    .hero-glow {
-      position: absolute;
-      inset: 12% 10% 10%;
-      background: radial-gradient(circle at center, rgba(150, 203, 157, 0.25), transparent 70%);
-      filter: blur(4px);
-      opacity: 0.85;
-      pointer-events: none;
-    }
-
-    .hero-frame {
-      position: relative;
-      border-radius: 26px;
-      overflow: hidden;
-      padding: 0.4rem;
-
-      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.85);
-      transform: translateY(8px);
-      animation: floatSlow 4.5s ease-in-out infinite alternate;
-    }
-
-    .hero-inner {
+    /* Fireworks page */
+    .fireworksWrap{
+      position:relative;
+      height: min(70vh, 520px);
       border-radius: 22px;
-      overflow: hidden;
+      overflow:hidden;
+      background: radial-gradient(900px 420px at 50% 30%, rgba(255,255,255,.18), transparent 60%),
+                  linear-gradient(180deg, #14021b, #250028, #38001f);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    canvas{display:block; width:100%; height:100%}
+
+    .overlayLove{
+      position:absolute; inset:0;
+      display:grid; place-items:center;
+      pointer-events:none;
+      text-align:center;
+      padding:18px;
+    }
+    .loveTitle{
+      font-size: clamp(30px, 5vw, 60px);
+      margin:0;
+      color: rgba(255,255,255,.96);
+      text-shadow: 0 10px 40px rgba(0,0,0,.35);
+      letter-spacing:-0.03em;
+    }
+    .loveSub{
+      margin:10px 0 0;
+      color: rgba(255,255,255,.88);
+      font-size: 15px;
+      opacity:.95;
     }
 
-    .hero-inner img {
-      width: 100%;
-      display: block;
-      transform: scale(1.02);
-      transition: transform 0.5s ease;
+    /* "No" page shenanigans */
+    .sadStage{
+      position:relative;
+      height: min(64vh, 460px);
+      border-radius: 22px;
+      overflow:hidden;
+      background: radial-gradient(900px 500px at 40% 30%, rgba(255,255,255,.22), transparent 62%),
+                  linear-gradient(180deg, #0b1020, #0a1a1a);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .rain{
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(100deg,
+          rgba(173,216,230,.0) 0px,
+          rgba(173,216,230,.0) 12px,
+          rgba(173,216,230,.14) 12px,
+          rgba(173,216,230,.14) 13px);
+      animation: rainMove 0.9s linear infinite;
+      opacity:.9;
+      mix-blend-mode: screen;
+    }
+    @keyframes rainMove{
+      from{background-position:0 0}
+      to{background-position: 40px 120px}
+    }
+    .noCenter{
+      position:absolute; inset:0;
+      display:grid; place-items:center;
+      text-align:center;
+      padding:18px;
+      color:rgba(255,255,255,.92);
+    }
+    .noTitle{
+      margin:0;
+      font-size: clamp(26px, 4.2vw, 52px);
+      letter-spacing:-0.03em;
+      text-shadow: 0 10px 40px rgba(0,0,0,.35);
+    }
+    .noText{
+      margin:10px auto 0;
+      max-width: 56ch;
+      color: rgba(255,255,255,.84);
+      font-size: 15px;
+      line-height:1.45;
+    }
+    .tinyBtnRow{
+      display:flex; gap:10px; justify-content:center; flex-wrap:wrap;
+      margin-top:16px;
+      pointer-events:auto;
     }
 
-    .hero-frame:hover img {
-      transform: scale(1.05);
+    /* Footer */
+    .footer{
+      margin-top: 14px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      opacity:.75;
+      font-size:12.5px;
     }
-
-
-
-    .footer {
-      margin-top: 1.8rem;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-      padding-bottom: 0.2rem;
-      animation: fadeUp 1s ease-out forwards;
-      opacity: 0;
-    }
-
-    .discord-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #5865F2; 
-    color: white;
-    padding: 12px 20px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.discord-button:hover {
-    background-color: #4752C4;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(88, 101, 242, 0.4);
-}
-
-.discord-icon {
-    width: 22px;
-    height: 22px;
-    filter: brightness(0) invert(1); 
-}
-
-
-
-    @keyframes float {
-      from { transform: translateY(0); }
-      to   { transform: translateY(-4px); }
-    }
-
-    @keyframes floatSlow {
-      from { transform: translateY(8px); }
-      to   { transform: translateY(2px); }
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-
-    @media (max-width: 900px) {
-      .page-shell {
-        padding-inline: 1.3rem;
-      }
-
-      .main-row {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 2rem;
-      }
-
-      .hero-side {
-        order: -1;
-      }
-
-      .hero-shell {
-        max-width: 360px;
-        margin: 0 auto;
-      }
-
-      .footer {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .page-shell {
-        padding-top: 1.2rem;
-      }
-
-      h1 {
-        font-size: 1.85rem;
-      }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      padding: 2px 6px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.72);
+      border:1px solid rgba(43,27,42,.12);
     }
   </style>
 </head>
 <body>
-<div class="page-shell">
 
-  <div class="top-bar">
-    <img src="/elusion-logo.png" alt="Elusion logo" class="logo-img">
-    <span class="brand-text">ELUSION</span>
-  </div>
-  <div class="main-row">
+  <div class="hearts" id="hearts"></div>
 
-    <div class="copy-block">
-      <div class="kicker">Temporary maintenance</div>
-      <h1>
-        Website currently
-        <span class="highlight">under maintenance.</span>
-      </h1>
-      <p class="lead">
-        We’re upgrading Elusion to serve you better. Some pages may be offline
-        while we deploy new features and polish the experience.
-      </p>
+  <div class="app">
+    <!-- PAGE 1: Name gate -->
+    <section class="page active" id="page-name">
+      <div class="content">
+        <header>
+          <div class="brand">
+            <div class="badge" aria-hidden="true">❤</div>
+            <div>
+              <h1>Valentine Access Portal</h1>
+              <p class="subtitle">Enter the secret name to unlock the cute stuff ✨</p>
+            </div>
+          </div>
+          <div class="pill" title="Hint">
+            <span aria-hidden="true">🔒</span>
+            <span>Tip: set the correct name in the code</span>
+          </div>
+        </header>
 
-      <div class="pill-row">
-        <span class="pill">🎮 GTAV graphics & FiveM scripts</span>
-        <span class="pill">🖥 PC optimization & support</span>
-        <span class="pill">💬 Discord services & bots</span>
-      </div>
-      <a href="https://elusion.site" class="primary-btn">
-        elusion.site
-      </a>
-      <br>
-            <br>
-                  <br>
+        <div class="grid">
+          <div class="card">
+            <div style="font-weight:800; font-size:18px;">What’s your name?</div>
+            <div class="subtitle">Be honest. The hearts are watching.</div>
 
+            <div class="inputRow">
+              <input id="nameInput" placeholder="Type the name here…" autocomplete="off" />
+              <button class="btnPrimary" id="unlockBtn">Unlock 💘</button>
+              <button class="btnGhost" id="randomBtn" title="Just for fun">Sprinkle Hearts</button>
+            </div>
 
-    </div>
-    <div class="hero-side">
-      <div class="hero-shell">
-        <div class="hero-glow"></div>
-        <div class="hero-frame">
-          <div class="hero-inner">
-            <img src="/hero-main.png" alt="Elusion hero">
-            
+            <div class="msg" id="nameMsg"></div>
+
+            <div class="footer">
+              <div>Press <span class="kbd">Enter</span> to submit</div>
+              <div>Made with maximum romantic effort™</div>
+            </div>
+          </div>
+
+          <div class="card cuteWrap">
+            <div class="cute" aria-hidden="true">
+              <div class="blob"></div>
+              <div class="floatingMiniHeart"></div>
+              <div class="bear">
+                <div class="ear left"></div>
+                <div class="ear right"></div>
+                <div class="head">
+                  <div class="face">
+                    <div class="eye left"><div class="sparkle"></div></div>
+                    <div class="eye right"><div class="sparkle"></div></div>
+                    <div class="cheek left"></div>
+                    <div class="cheek right"></div>
+                    <div class="nose"></div>
+                    <div class="smile"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:10px; font-weight:800;">Cute Bear Guard</div>
+            <div class="subtitle" style="text-align:center">Only lets the right name pass 🐻💗</div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-      <a href="https://discord.gg/hPyyjXMFec" target="_blank" class="discord-button">
-    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/discord.svg" alt="Discord" class="discord-icon">
-    Join our Discord
-</a>
-<br>
-  <!-- Footer -->
-  <div class="footer">
-    <span>© <span id="year"></span> Elusion. All rights reserved.</span>
-    <span>We’ll be back online shortly — thank you for your patience.</span>
-  </div>
-</div>
+    </section>
 
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>
+    <!-- PAGE 2: Question -->
+    <section class="page" id="page-question">
+      <div class="content">
+        <header>
+          <div class="brand">
+            <div class="badge" aria-hidden="true">💌</div>
+            <div>
+              <h1>One Important Question…</h1>
+              <p class="subtitle">No pressure (okay maybe a tiny bit).</p>
+            </div>
+          </div>
+          <div class="nameTag" id="whoTag">👤</div>
+        </header>
+
+        <div class="grid">
+          <div class="card">
+            <div class="bigQ">Will you be my valentine? 💘</div>
+            <div class="subtitle">Pick wisely. The universe is taking notes.</div>
+
+            <div class="btnRow">
+              <button class="btnPrimary" id="yesBtn">YES!! 🎆</button>
+              <button class="btnGhost" id="noBtn">No 😶</button>
+              <button class="btnGhost" id="backBtn">Back</button>
+            </div>
+
+            <div class="tinyNote">
+              Pro tip: “Yes” has fireworks. “No” has… consequences. (Cute ones.)
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="font-weight:900; font-size:18px;">A tiny poem</div>
+            <div class="subtitle" style="margin-top:10px; line-height:1.55">
+              Roses are red,<br/>
+              Violets are blue,<br/>
+              I made this lil’ page<br/>
+              Just to ask you 💗
+            </div>
+            <div style="margin-top:14px; opacity:.8; font-size:13px">
+              (Yes, I coded the hearts. Yes, they’re adorable.)
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: YES - Fireworks + image -->
+    <section class="page" id="page-yes">
+      <div class="content">
+        <header>
+          <div class="brand">
+            <div class="badge" aria-hidden="true">🎇</div>
+            <div>
+              <h1>YAAAY!! 💖</h1>
+              <p class="subtitle">Okay hold still while the sky celebrates.</p>
+            </div>
+          </div>
+          <div class="pill"><span aria-hidden="true">✨</span><span>Fireworks mode: ON</span></div>
+        </header>
+
+        <div class="fireworksWrap" id="fwWrap">
+          <canvas id="fw"></canvas>
+          <div class="overlayLove">
+            <div>
+              <h2 class="loveTitle">Happy Valentine’s! 💞</h2>
+              <p class="loveSub" id="loveSub">You just made my whole day.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="btnRow" style="margin-top:14px">
+          <button class="btnPrimary" id="replayBtn">Replay Fireworks 🎆</button>
+          <button class="btnGhost" id="yesBackBtn">Back</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 4: NO - show skills -->
+    <section class="page" id="page-no">
+      <div class="content">
+        <header>
+          <div class="brand">
+            <div class="badge" aria-hidden="true">🫠</div>
+            <div>
+              <h1>Oh. Okay. 😭</h1>
+              <p class="subtitle">It’s fine. I’m totally fine. (I’m not.)</p>
+            </div>
+          </div>
+          <div class="pill"><span aria-hidden="true">🌧️</span><span>Drama weather enabled</span></div>
+        </header>
+
+        <div class="sadStage">
+          <div class="rain"></div>
+          <div class="noCenter">
+            <div>
+              <h2 class="noTitle" id="noTitle">My heart just did a lil’ backflip.</h2>
+              <p class="noText" id="noText">
+                But hey—your honesty is valid. To cope, I have hired a professional cloud to rain gently,
+                and I will now attempt to bribe you with a mini game:
+                press “Redeem” and I’ll make the “NO” button run away next time. 😈
+              </p>
+              <div class="tinyBtnRow">
+                <button class="btnDanger" id="redeemBtn">Redeem 😈</button>
+                <button class="btnGhost" id="tryAgainBtn">Try Again 💘</button>
+                <button class="btnGhost" id="noBackBtn">Back</button>
+              </div>
+              <div class="tinyNote" id="redeemNote" style="color:rgba(255,255,255,.82)"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <script>
+    /***********************
+     * CONFIG YOU SHOULD EDIT
+     ***********************/
+    // Set this to the EXACT name you want to accept:
+    const CORRECT_NAME = "Reem"; // <-- change me (example: "Aisha")
+
+    /***********************
+     * Simple page router
+     ***********************/
+    const pages = {
+      name: document.getElementById("page-name"),
+      question: document.getElementById("page-question"),
+      yes: document.getElementById("page-yes"),
+      no: document.getElementById("page-no"),
+    };
+
+    function showPage(key){
+      Object.values(pages).forEach(p => p.classList.remove("active"));
+      pages[key].classList.add("active");
+
+      // start/stop fireworks depending on page
+      if(key === "yes"){
+        startFireworks();
+      } else {
+        stopFireworks();
+      }
+    }
+
+    /***********************
+     * Floating hearts generator
+     ***********************/
+    const hearts = document.getElementById("hearts");
+    function spawnHeart(){
+      const h = document.createElement("div");
+      h.className = "heart";
+      const left = Math.random()*100;
+      const dur = 7 + Math.random()*7;
+      const size = 0.7 + Math.random()*1.9;
+      h.style.left = left + "vw";
+      h.style.animationDuration = dur + "s";
+      h.style.setProperty("--s", size);
+      h.style.filter = `blur(${Math.random()*0.6}px)`;
+      hearts.appendChild(h);
+      setTimeout(()=>h.remove(), dur*1000);
+    }
+    // steady stream
+    let heartInterval = setInterval(spawnHeart, 260);
+    // initial burst
+    for(let i=0;i<20;i++) setTimeout(spawnHeart, i*60);
+
+    /***********************
+     * Name gate logic
+     ***********************/
+    const nameInput = document.getElementById("nameInput");
+    const unlockBtn = document.getElementById("unlockBtn");
+    const randomBtn = document.getElementById("randomBtn");
+    const nameMsg = document.getElementById("nameMsg");
+    const whoTag = document.getElementById("whoTag");
+
+    let acceptedName = "";
+
+    function normalize(s){
+      return (s || "").trim().toLowerCase();
+    }
+
+    function tryUnlock(){
+      const typed = nameInput.value.trim();
+      if(!typed){
+        nameMsg.textContent = "Psst… type a name first 💗";
+        nameMsg.className = "msg bad";
+        return;
+      }
+      if(normalize(typed) === normalize(CORRECT_NAME)){
+        acceptedName = typed;
+        whoTag.textContent = "👤 " + acceptedName;
+        nameMsg.textContent = "Correct! Proceeding to the question… 💘";
+        nameMsg.className = "msg good";
+        setTimeout(()=>showPage("question"), 650);
+      } else {
+        // playful wrong answer responses
+        const lines = [
+          "Hmm… that name feels suspiciously incorrect 👀",
+          "Close… (or not). Try again 😅",
+          "The bear says: nope 🐻",
+          "Not the secret name! The hearts demand accuracy 💗",
+        ];
+        nameMsg.textContent = lines[Math.floor(Math.random()*lines.length)];
+        nameMsg.className = "msg bad";
+        // tiny shake effect
+        pages.name.animate(
+          [{transform:"translateX(0)"},{transform:"translateX(-6px)"},{transform:"translateX(6px)"},{transform:"translateX(0)"}],
+          {duration:220, iterations:1}
+        );
+      }
+    }
+
+    unlockBtn.addEventListener("click", tryUnlock);
+    nameInput.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter") tryUnlock();
+    });
+
+    randomBtn.addEventListener("click", ()=>{
+      for(let i=0;i<18;i++) setTimeout(spawnHeart, i*40);
+      nameMsg.textContent = "Heart confetti deployed ✅";
+      nameMsg.className = "msg good";
+    });
+
+    /***********************
+     * Question page logic
+     ***********************/
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn  = document.getElementById("noBtn");
+    const backBtn= document.getElementById("backBtn");
+
+    let noRunsAway = false;
+
+    backBtn.addEventListener("click", ()=>showPage("name"));
+    yesBtn.addEventListener("click", ()=>showPage("yes"));
+    noBtn.addEventListener("click", ()=>showPage("no"));
+
+    // "show skills": if redeemed, NO button runs away playfully
+    function makeNoButtonSkittish(){
+      const pad = 10;
+      const parent = noBtn.parentElement;
+      parent.style.position = "relative";
+      noBtn.style.position = "relative";
+
+      function dodge(){
+        const w = parent.clientWidth - noBtn.offsetWidth - pad*2;
+        const h = 160; // vertical playground
+        const x = (Math.random()*w) - w/2;
+        const y = (Math.random()*h) - h/3;
+        noBtn.animate([{transform:`translate(${x}px, ${y}px)`}], {duration:160, fill:"forwards", easing:"ease-out"});
+      }
+      noBtn.addEventListener("mouseenter", dodge);
+      noBtn.addEventListener("touchstart", (e)=>{ e.preventDefault(); dodge(); }, {passive:false});
+    }
+
+    /***********************
+     * YES page fireworks (canvas)
+     ***********************/
+    const canvas = document.getElementById("fw");
+    const ctx = canvas.getContext("2d");
+    let fwRAF = null;
+    let particles = [];
+    let rockets = [];
+    let lastT = 0;
+
+    function resizeCanvas(){
+      const wrap = document.getElementById("fwWrap");
+      const r = wrap.getBoundingClientRect();
+      const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      canvas.width = Math.floor(r.width * dpr);
+      canvas.height = Math.floor(r.height * dpr);
+      canvas.style.width = r.width + "px";
+      canvas.style.height = r.height + "px";
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    window.addEventListener("resize", resizeCanvas);
+
+    function rand(min,max){ return min + Math.random()*(max-min); }
+
+    function launchRocket(){
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      rockets.push({
+        x: rand(w*0.15, w*0.85),
+        y: h + 10,
+        vx: rand(-0.6, 0.6),
+        vy: rand(-8.6, -11.2),
+        targetY: rand(h*0.18, h*0.45),
+        hue: rand(315, 360), // pink-ish
+      });
+    }
+
+    function explode(x,y,hue){
+      const count = Math.floor(rand(44, 78));
+      for(let i=0;i<count;i++){
+        const a = rand(0, Math.PI*2);
+        const sp = rand(1.2, 5.8) * (Math.random()<0.18 ? 1.7 : 1);
+        particles.push({
+          x,y,
+          vx: Math.cos(a)*sp,
+          vy: Math.sin(a)*sp,
+          life: rand(0.9, 1.6),
+          age: 0,
+          hue: hue + rand(-18, 18),
+          size: rand(1.2, 2.6),
+          drag: 0.985,
+          gravity: 0.06,
+          sparkle: Math.random()<0.25
+        });
+      }
+      // tiny heart burst for extra valentine energy
+      for(let i=0;i<8;i++){
+        const a = rand(0, Math.PI*2);
+        const sp = rand(1.0, 3.2);
+        particles.push({
+          x,y,
+          vx: Math.cos(a)*sp,
+          vy: Math.sin(a)*sp,
+          life: rand(1.0, 1.8),
+          age: 0,
+          hue: rand(330, 360),
+          size: rand(2.2, 3.2),
+          drag: 0.99,
+          gravity: 0.045,
+          heart: true
+        });
+      }
+    }
+
+    function drawHeartParticle(p){
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(Math.PI/4);
+      const s = p.size*1.8;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.rect(-s/2, -s/2, s, s);
+      ctx.fill();
+      // circles
+      ctx.beginPath();
+      ctx.arc(-s/2, 0, s/2, 0, Math.PI*2);
+      ctx.arc(0, -s/2, s/2, 0, Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function tickFireworks(t){
+      const dt = Math.min(0.033, (t - lastT)/1000 || 0.016);
+      lastT = t;
+
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+
+      // fade frame
+      ctx.fillStyle = "rgba(0,0,0,0.18)";
+      ctx.fillRect(0,0,w,h);
+
+      // occasional launches
+      if(Math.random() < 0.07) launchRocket();
+      if(rockets.length < 2 && Math.random() < 0.5) launchRocket();
+
+      // rockets
+      for(let i=rockets.length-1;i>=0;i--){
+        const r = rockets[i];
+        r.x += r.vx;
+        r.y += r.vy;
+        r.vy += 0.08; // gravity
+        // trail
+        ctx.beginPath();
+        ctx.strokeStyle = `hsla(${r.hue}, 95%, 70%, 0.75)`;
+        ctx.lineWidth = 2;
+        ctx.moveTo(r.x, r.y);
+        ctx.lineTo(r.x - r.vx*2.4, r.y - r.vy*2.4);
+        ctx.stroke();
+
+        if(r.y <= r.targetY || r.vy >= -1.4){
+          explode(r.x, r.y, r.hue);
+          rockets.splice(i,1);
+        }
+      }
+
+      // particles
+      for(let i=particles.length-1;i>=0;i--){
+        const p = particles[i];
+        p.age += dt;
+        if(p.age > p.life){
+          particles.splice(i,1);
+          continue;
+        }
+        p.vx *= p.drag;
+        p.vy = p.vy*p.drag + p.gravity;
+        p.x += p.vx;
+        p.y += p.vy;
+
+        const alpha = 1 - (p.age/p.life);
+        const bright = p.sparkle && Math.random()<0.25 ? 88 : 70;
+        ctx.fillStyle = `hsla(${p.hue}, 100%, ${bright}%, ${alpha})`;
+
+        if(p.heart){
+          drawHeartParticle(p);
+        } else {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+
+      fwRAF = requestAnimationFrame(tickFireworks);
+    }
+
+    function startFireworks(){
+      resizeCanvas();
+      // reset and launch a small celebration immediately
+      particles = [];
+      rockets = [];
+      for(let i=0;i<3;i++) launchRocket();
+      if(!fwRAF){
+        ctx.fillStyle = "rgba(0,0,0,1)";
+        ctx.fillRect(0,0,canvas.clientWidth, canvas.clientHeight);
+        lastT = 0;
+        fwRAF = requestAnimationFrame(tickFireworks);
+      }
+      // personalized line
+      const loveSub = document.getElementById("loveSub");
+      loveSub.textContent = acceptedName
+        ? `Officially yours, ${acceptedName} 💗`
+        : `Officially yours 💗`;
+    }
+
+    function stopFireworks(){
+      if(fwRAF){
+        cancelAnimationFrame(fwRAF);
+        fwRAF = null;
+      }
+    }
+
+    document.getElementById("replayBtn").addEventListener("click", ()=>{
+      // quick burst
+      for(let i=0;i<6;i++) setTimeout(launchRocket, i*140);
+    });
+    document.getElementById("yesBackBtn").addEventListener("click", ()=>showPage("question"));
+
+    /***********************
+     * NO page logic
+     ***********************/
+    const redeemBtn = document.getElementById("redeemBtn");
+    const tryAgainBtn = document.getElementById("tryAgainBtn");
+    const noBackBtn = document.getElementById("noBackBtn");
+    const redeemNote = document.getElementById("redeemNote");
+    const noTitle = document.getElementById("noTitle");
+    const noText = document.getElementById("noText");
+
+    redeemBtn.addEventListener("click", ()=>{
+      noRunsAway = true;
+      redeemNote.textContent = "Redeemed ✅ Next time, the NO button will panic and run away.";
+      noTitle.textContent = "Plot twist: I respect your choice…";
+      noText.textContent =
+        "…but I also installed a playful anti-no system. It’s not mind control. It’s just ✨chaos✨. " +
+        "Go back and try hovering the NO button. 😈";
+      if(!noBtn.dataset.skittish){
+        makeNoButtonSkittish();
+        noBtn.dataset.skittish = "1";
+      }
+      // little heart burst even in sadness
+      for(let i=0;i<12;i++) setTimeout(spawnHeart, i*50);
+    });
+
+    tryAgainBtn.addEventListener("click", ()=>showPage("question"));
+    noBackBtn.addEventListener("click", ()=>showPage("question"));
+
+    /***********************
+     * Small safety: block question page if name not accepted
+     ***********************/
+    const originalShowPage = showPage;
+    showPage = function(key){
+      if((key === "question" || key === "yes" || key === "no") && !acceptedName){
+        // if they try to jump without unlocking
+        pages.name.classList.add("active");
+        pages.question.classList.remove("active");
+        pages.yes.classList.remove("active");
+        pages.no.classList.remove("active");
+        nameMsg.textContent = "Nice try 😄 Unlock it with the correct name first!";
+        nameMsg.className = "msg bad";
+        return;
+      }
+      originalShowPage(key);
+    };
+
+    /***********************
+     * Optional: make NO button only run away if redeemed
+     ***********************/
+    // If redeemed, enable skittish behavior (already handled above).
+    // Otherwise, it's a normal button.
+
+  </script>
 </body>
 </html>
-
-
-
-
